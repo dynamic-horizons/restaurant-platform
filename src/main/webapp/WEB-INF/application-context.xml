@@ -33,11 +33,14 @@
 			/> -->
 	</aop:config>
 
-	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/BrothersDeliDB" />
+	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/RestaurantPlatformDB" />
 
-	<!-- <bean id="dataSource" class="org.jdbcdslog.ConnectionPoolDataSourceProxy">
+	<!-- Uncomment for JDBC DS Logging -->
+	<!--
+	<bean id="dataSource" class="org.jdbcdslog.ConnectionPoolDataSourceProxy">
 		<property name="targetDSDirect" ref="targetDataSource" />
-	</bean> -->
+	</bean> 
+	-->
 
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
