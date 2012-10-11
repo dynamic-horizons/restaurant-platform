@@ -1,0 +1,989 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://openmenu.org/schema"
+	xmlns:tns="http://openmenu.org/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	attributeFormDefault="unqualified" elementFormDefault="qualified"
+	jxb:version="2.1" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" version="1.6">
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<jxb:schemaBindings>
+				<jxb:package name="net.dynamichorizons.rp.domain.menu" />
+			</jxb:schemaBindings>
+			<jxb:globalBindings>
+				<jxb:javaType name="java.util.UUID" xmlType="tns:Uuid"
+					parseMethod="net.dynamichorizons.rp.util.DatatypeConverter.parseUuid"
+					printMethod="net.dynamichorizons.rp.util.DatatypeConverter.printUuid" />
+				<jxb:javaType name="org.joda.time.DateTime" xmlType="xsd:dateTime"
+					parseMethod="net.dynamichorizons.rp.util.DatatypeConverter.parseDateTime"
+					printMethod="net.dynamichorizons.rp.util.DatatypeConverter.printDateTime" />
+				<jxb:javaType name="org.joda.time.LocalDate" xmlType="xsd:date"
+					parseMethod="net.dynamichorizons.rp.util.DatatypeConverter.parseDate"
+					printMethod="net.dynamichorizons.rp.util.DatatypeConverter.printDate" />
+				<jxb:javaType name="org.joda.time.LocalTime" xmlType="xsd:time"
+					parseMethod="net.dynamichorizons.rp.util.DatatypeConverter.parseTime"
+					printMethod="net.dynamichorizons.rp.util.DatatypeConverter.printTime" />
+			</jxb:globalBindings>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+	<xsd:element name="omf" type="tns:OpenMenuFormat" />
+
+	<xsd:complexType name="OpenMenuFormat">
+		<xsd:sequence>
+			<xsd:element name="openmenu" type="tns:OpenMenu" />
+			<xsd:element name="restaurant_info" type="tns:RestaurantInfo" />
+			<xsd:element name="menus" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="unbounded" name="menu_item_option"
+							type="tns:Menu" minOccurs="1" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<!-- A universally unique ID for this OpenMenu -->
+		<xsd:attribute name="uuid" type="tns:Uuid" use="required" />
+		<xsd:attribute name="created_date" type="xsd:dateTime"
+			use="required" />
+		<xsd:attribute name="accuracy" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:int">
+					<!-- 1 = Restaurant Maintained -->
+					<xsd:enumeration value="1" />
+					<!-- 5 = Maintained by an OpenMenu Registrar -->
+					<xsd:enumeration value="5" />
+					<!-- 9 = Maintained Through Automation -->
+					<xsd:enumeration value="9" />
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="private">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="private"></xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenMenu">
+		<xsd:sequence>
+			<xsd:element name="version" type="xsd:decimal" />
+			<xsd:element name="crosswalks" type="tns:Crosswalks"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="Crosswalks">
+		<xsd:sequence>
+			<xsd:element name="crosswalk_id" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="\w+"></xsd:pattern>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="crosswalk_name" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="50"></xsd:maxLength>
+						<xsd:minLength value="0"></xsd:minLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="crosswalk_url" minOccurs="0" type="tns:UrlType">
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="RestaurantInfo">
+		<xsd:sequence>
+			<xsd:element name="restaurant_name">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="2" />
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="business_type">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="Franchisee" />
+						<xsd:enumeration value="Corporate" />
+						<xsd:enumeration value="Independent" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="brief_description">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="2" />
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="full_description" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="0" />
+						<xsd:maxLength value="2000" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="location_id" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="0" />
+						<xsd:maxLength value="25" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="mobile" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:int">
+						<!-- 0 = No -->
+						<xsd:enumeration value="0" />
+						<!-- 1 = Yes (Mobile Food Truck, Food Cart) -->
+						<xsd:enumeration value="1" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="longitude" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="latitude" type="xsd:decimal"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="utc_offset" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="address_1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="2" />
+						<xsd:maxLength value="120" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="address_2" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="0" />
+						<xsd:maxLength value="120" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="city_town">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="2" />
+						<xsd:maxLength value="50" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="region_area" minOccurs="0" type="tns:Region" />
+			<xsd:element name="state_province" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:length value="2" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="postal_code" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="0"></xsd:minLength>
+						<xsd:maxLength value="30"></xsd:maxLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="country">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:length value="2"></xsd:length>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="phone" type="tns:PhoneNumber"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="fax" type="tns:PhoneNumber" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="website_url" minOccurs="0" maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:anyURI">
+						<xsd:minLength value="0"></xsd:minLength>
+						<xsd:maxLength value="120"></xsd:maxLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="omf_file_url">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:anyURI">
+						<xsd:minLength value="0"></xsd:minLength>
+						<xsd:maxLength value="120"></xsd:maxLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="logo_urls">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="unbounded" name="logo_url"
+							type="tns:ImageType" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="environment" type="tns:Environment" />
+			<xsd:element name="contacts" type="tns:Contacts" />
+			<xsd:element name="parent_company" type="tns:ParentCompany" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Region">
+		<xsd:attribute name="name" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="2" />
+					<xsd:maxLength value="50" />
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="designation" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="2" />
+					<xsd:maxLength value="50" />
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="Menu">
+		<xsd:sequence>
+			<xsd:element name="menu_description" minOccurs="0"
+				maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="0"></xsd:minLength>
+						<xsd:maxLength value="255"></xsd:maxLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="menu_note" minOccurs="0" maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="0"></xsd:minLength>
+						<xsd:maxLength value="255"></xsd:maxLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="menu_duration" type="tns:MenuDuration"
+				minOccurs="1" maxOccurs="1" />
+			<xsd:element name="menu_groups" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="unbounded" name="menu_group"
+							type="tns:MenuGroup" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="name" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="2"></xsd:minLength>
+					<xsd:maxLength value="50"></xsd:maxLength>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="currency_symbol" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:length value="3"></xsd:length>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="language" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:length value="2"></xsd:length>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="uid" type="tns:Uuid" use="required" />
+	</xsd:complexType>
+
+	<xsd:complexType name="MenuGroup">
+		<xsd:sequence>
+			<xsd:element name="menu_group_description" minOccurs="0"
+				maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="0"></xsd:minLength>
+						<xsd:maxLength value="255"></xsd:maxLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="menu_group_note" minOccurs="0"
+				maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="0"></xsd:minLength>
+						<xsd:maxLength value="255"></xsd:maxLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="menu_items" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="unbounded" name="menu_item"
+							type="tns:MenuItem" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="menu_group_options" minOccurs="0"
+				maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="unbounded" name="menu_item"
+							type="tns:MenuGroupOption" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="name" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"></xsd:minLength>
+					<xsd:maxLength value="50"></xsd:maxLength>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="uid" type="tns:Uuid" use="required" />
+		<xsd:attribute name="disabled">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="disabled"></xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="MenuGroupOption">
+		<xsd:sequence>
+			<xsd:element name="menu_group_option_information">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="0"></xsd:minLength>
+						<xsd:maxLength value="25"></xsd:maxLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="menu_group_option_items" minOccurs="0"
+				maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="unbounded" name="menu_item_option"
+							type="tns:MenuGroupOptionItem" minOccurs="1" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="name" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"></xsd:minLength>
+					<xsd:maxLength value="50"></xsd:maxLength>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="min_selected" type="xsd:int" use="optional" />
+		<xsd:attribute name="max_selected" type="xsd:int" use="optional" />
+	</xsd:complexType>
+
+	<xsd:complexType name="MenuGroupOptionItem">
+		<xsd:sequence>
+			<xsd:element name="menu_group_option_name">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="2"></xsd:minLength>
+						<xsd:maxLength value="50"></xsd:maxLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="menu_group_option_additional_cost"
+				type="xsd:double" minOccurs="0">
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="MenuItem">
+		<xsd:sequence>
+			<xsd:element name="menu_item_name" minOccurs="0"
+				maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="2"></xsd:minLength>
+						<xsd:maxLength value="75"></xsd:maxLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="menu_item_description" minOccurs="0"
+				maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="0"></xsd:minLength>
+						<xsd:maxLength value="450"></xsd:maxLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="menu_item_price" minOccurs="0"
+				maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:decimal">
+						<xsd:minExclusive value="0"></xsd:minExclusive>
+						<xsd:maxExclusive value="99999"></xsd:maxExclusive>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="menu_item_calories" type="xsd:int"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="menu_item_allergy_information"
+				minOccurs="0" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="tns:MenuItemAllergyInformation">
+							<xsd:attribute name="allergens">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:minLength value="0"></xsd:minLength>
+										<xsd:maxLength value="255"></xsd:maxLength>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="menu_item_heat_index" minOccurs="0"
+				maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:int">
+						<xsd:minExclusive value="0"></xsd:minExclusive>
+						<xsd:maxExclusive value="5"></xsd:maxExclusive>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="menu_item_image_urls" minOccurs="0"
+				maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="unbounded" name="menu_item_image_url"
+							type="tns:MenuItemImageUrl" minOccurs="1" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element minOccurs="0" maxOccurs="1" name="menu_item_sizes">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="unbounded" name="menu_item_image_url"
+							type="tns:MenuItemSize" minOccurs="1" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element minOccurs="0" maxOccurs="1" name="menu_item_options">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="unbounded" name="menu_item_option"
+							type="tns:MenuItemOption" minOccurs="1" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element minOccurs="0" maxOccurs="1" name="menu_item_tags">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="unbounded" name="menu_item_tag"
+							type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="uid" type="tns:Uuid" />
+		<xsd:attribute name="disabled">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="disabled"></xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="special">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="special"></xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="vegetarian">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="vegetarian"></xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="vegan">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="vegan"></xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="kosher">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="kosher"></xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="halal">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="halal"></xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="gluten_free">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="gluten_free"></xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="MenuItemImageUrl">
+		<xsd:attribute name="width" type="xsd:string" />
+		<xsd:attribute name="height" type="xsd:string" />
+		<xsd:attribute name="type" type="xsd:string" />
+		<xsd:attribute name="media" type="xsd:string" />
+	</xsd:complexType>
+
+	<xsd:complexType name="MenuItemSize">
+		<xsd:sequence>
+			<xsd:element name="menu_item_size_name">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="0"></xsd:minLength>
+						<xsd:maxLength value="25"></xsd:maxLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="menu_item_size_description" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="0"></xsd:minLength>
+						<xsd:maxLength value="120"></xsd:maxLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="menu_item_size_price" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:double">
+						<xsd:minExclusive value="0"></xsd:minExclusive>
+						<xsd:maxExclusive value="10000"></xsd:maxExclusive>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="menu_item_size_calories" type="xsd:int"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="MenuItemOption">
+		<xsd:sequence>
+			<xsd:element name="menu_item_option_information">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="0"></xsd:minLength>
+						<xsd:maxLength value="25"></xsd:maxLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="menu_item_option_item" minOccurs="1"
+				maxOccurs="unbounded" type="tns:MenuItemOptionItem">
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="name" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"></xsd:minLength>
+					<xsd:maxLength value="50"></xsd:maxLength>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="min_selected" type="xsd:int" />
+		<xsd:attribute name="max_selected" type="xsd:int" />
+	</xsd:complexType>
+
+	<xsd:complexType name="MenuItemOptionItem">
+		<xsd:sequence>
+			<xsd:element name="menu_item_option_name">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="2"></xsd:minLength>
+						<xsd:maxLength value="50"></xsd:maxLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="men_item_option_additional_cost" type="xsd:double"
+				minOccurs="0">
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="MenuDuration">
+		<xsd:sequence>
+			<xsd:element name="menu_duration_name" minOccurs="1"
+				maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="breakfast"></xsd:enumeration>
+						<xsd:enumeration value="brunch"></xsd:enumeration>
+						<xsd:enumeration value="lunch"></xsd:enumeration>
+						<xsd:enumeration value="breakfast-lunch"></xsd:enumeration>
+						<xsd:enumeration value="dinner"></xsd:enumeration>
+						<xsd:enumeration value="lunch-dinner"></xsd:enumeration>
+						<xsd:enumeration value="late-night"></xsd:enumeration>
+						<xsd:enumeration value="all"></xsd:enumeration>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="menu_duration_time_start" type="xsd:time"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="menu_duration_time_end" type="xsd:time"
+				minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ParentCompany">
+		<xsd:sequence>
+			<xsd:element name="parent_company_name" type="xsd:string" />
+			<xsd:element name="parent_company_website" type="xsd:string" />
+			<xsd:element name="address_1" type="xsd:string" />
+			<xsd:element name="address_2" type="xsd:string" />
+			<xsd:element name="city_town" type="xsd:string" />
+			<xsd:element name="state_province" type="xsd:string" />
+			<xsd:element name="postal_code" type="xsd:string" />
+			<xsd:element name="country" type="xsd:string" />
+			<xsd:element name="phone" type="tns:PhoneNumber" />
+			<xsd:element name="fax" type="tns:PhoneNumber" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Contacts">
+		<xsd:sequence>
+			<xsd:element name="contact" type="tns:Contact" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Contact">
+		<xsd:sequence>
+			<xsd:element name="first_name" type="xsd:string" />
+			<xsd:element name="last_name" type="xsd:string" />
+			<xsd:element name="email" type="xsd:string" />
+		</xsd:sequence>
+		<xsd:attribute name="type" type="xsd:string" />
+	</xsd:complexType>
+
+	<xsd:complexType name="Environment">
+		<xsd:sequence>
+			<xsd:element name="seating_qty" type="xsd:int" minOccurs="0" />
+			<xsd:element name="max_group_size" type="xsd:int"
+				minOccurs="0" />
+			<xsd:element name="age_level_preference" type="xsd:int"
+				minOccurs="0" />
+			<xsd:element name="smoking_allowed" minOccurs="0"
+				type="xsd:boolean">
+			</xsd:element>
+			<xsd:element name="takeout_available" type="xsd:boolean"
+				minOccurs="0" />
+			<xsd:element name="delivery_available" type="tns:DeliveryAvailable"
+				minOccurs="0" />
+			<xsd:element name="catering_available" type="xsd:boolean"
+				minOccurs="0" />
+			<xsd:element name="reservations" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="no"></xsd:enumeration>
+						<xsd:enumeration value="suggested"></xsd:enumeration>
+						<xsd:enumeration value="required"></xsd:enumeration>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="alcohol_type" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="full bar"></xsd:enumeration>
+						<xsd:enumeration value="beer and wine"></xsd:enumeration>
+						<xsd:enumeration value="wine only"></xsd:enumeration>
+						<xsd:enumeration value="beer only"></xsd:enumeration>
+						<xsd:enumeration value="none"></xsd:enumeration>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="music_type" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="none"></xsd:enumeration>
+						<xsd:enumeration value="live"></xsd:enumeration>
+						<xsd:enumeration value="pre-recorded"></xsd:enumeration>
+						<xsd:enumeration value="dj"></xsd:enumeration>
+						<xsd:enumeration value="jukebox"></xsd:enumeration>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="pets_allowed" minOccurs="0" type="xsd:boolean" />
+			<xsd:element name="wheelchair_accessible" type="xsd:boolean"
+				minOccurs="0" />
+			<xsd:element name="dress_code" minOccurs="0" type="xsd:boolean" />
+			<xsd:element name="cuisine_type_primary" type="tns:Cuisine" />
+			<xsd:element name="cuisine_type_secondary" type="tns:Cuisine"
+				minOccurs="0" />
+			<xsd:element name="seating_locations" type="tns:SeatingLocations" />
+			<xsd:element name="accepted_currencies" type="tns:AcceptedCurrencies" />
+			<xsd:element name="online_reservations">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="unbounded" name="online_reservation"
+							type="tns:OnlineReservation" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="online_ordering">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="unbounded" name="online_reservation"
+							type="tns:OnlineReservation" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="operating_days">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="unbounded" name="operating_day"
+							type="tns:OperatingDay" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="parking" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OperatingDay">
+		<xsd:sequence>
+			<xsd:element name="day_of_week" type="xsd:int" />
+			<xsd:element name="open_time" type="xsd:dateTime" />
+			<xsd:element name="close_time" type="xsd:dateTime" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="AcceptedCurrencies">
+		<xsd:sequence>
+			<xsd:element name="accepted_currency" minOccurs="1"
+				maxOccurs="unbounded">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:length value="3"></xsd:length>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="SeatingLocations">
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" name="seating_location">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="none"></xsd:enumeration>
+						<xsd:enumeration value="indoor"></xsd:enumeration>
+						<xsd:enumeration value="outdoor"></xsd:enumeration>
+						<xsd:enumeration value="rooftop"></xsd:enumeration>
+						<xsd:enumeration value="poolside"></xsd:enumeration>
+						<xsd:enumeration value="deck"></xsd:enumeration>
+						<xsd:enumeration value="cellar"></xsd:enumeration>
+						<xsd:enumeration value="pier"></xsd:enumeration>
+						<xsd:enumeration value="veranda"></xsd:enumeration>
+						<xsd:enumeration value="porch"></xsd:enumeration>
+						<xsd:enumeration value="beach"></xsd:enumeration>
+						<xsd:enumeration value="terrace"></xsd:enumeration>
+						<xsd:enumeration value="patio"></xsd:enumeration>
+						<xsd:enumeration value="sidewalk"></xsd:enumeration>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="DeliveryAvailable">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:boolean">
+				<xsd:attribute name="radius" type="xsd:double" />
+				<xsd:attribute name="fee" type="xsd:double" />
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="ImageType">
+		<xsd:simpleContent>
+			<xsd:extension base="tns:UrlType">
+				<xsd:attribute name="width" type="xsd:int"></xsd:attribute>
+				<xsd:attribute name="height" type="xsd:int"></xsd:attribute>
+				<xsd:attribute name="type" use="required">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:enumeration value="full"></xsd:enumeration>
+							<xsd:enumeration value="thumbnail"></xsd:enumeration>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+				<xsd:attribute name="media" use="required">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:enumeration value="mobile"></xsd:enumeration>
+							<xsd:enumeration value="print"></xsd:enumeration>
+							<xsd:enumeration value="web"></xsd:enumeration>
+							<xsd:enumeration value="all"></xsd:enumeration>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:simpleType name="UrlType">
+		<xsd:restriction base="xsd:anyURI">
+			<xsd:minLength value="11" />
+			<xsd:maxLength value="120" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Uuid">
+		<xsd:restriction base="xsd:string">
+			<xsd:length value="36" fixed="true" />
+			<xsd:pattern
+				value="[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="PhoneNumber">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern
+				value="([1-9][0-9]{0,2})(-[1-9][0-9]{0,4})?(-[1-9][0-9]{0,13})(-[0-9]+)?" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Cuisine">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="American" />
+			<xsd:enumeration value="Afghan" />
+			<xsd:enumeration value="African" />
+			<xsd:enumeration value="Argentinean" />
+			<xsd:enumeration value="Asian" />
+			<xsd:enumeration value="Bakery" />
+			<xsd:enumeration value="Barbeque" />
+			<xsd:enumeration value="Brazilian" />
+			<xsd:enumeration value="Brew / Pubs / Microbrewery" />
+			<xsd:enumeration value="Cajun/Creole" />
+			<xsd:enumeration value="California" />
+			<xsd:enumeration value="Caribbean" />
+			<xsd:enumeration value="Chinese" />
+			<xsd:enumeration value="Coffee House" />
+			<xsd:enumeration value="Continental" />
+			<xsd:enumeration value="Cuban" />
+			<xsd:enumeration value="Desserts" />
+			<xsd:enumeration value="Diner" />
+			<xsd:enumeration value="Ethiopian" />
+			<xsd:enumeration value="Family / Homestyle" />
+			<xsd:enumeration value="French/French Bistro" />
+			<xsd:enumeration value="Fusion" />
+			<xsd:enumeration value="German" />
+			<xsd:enumeration value="Greek" />
+			<xsd:enumeration value="Hamburger" />
+			<xsd:enumeration value="Hawaiian" />
+			<xsd:enumeration value="Hot Dog" />
+			<xsd:enumeration value="Indian" />
+			<xsd:enumeration value="International" />
+			<xsd:enumeration value="Irish" />
+			<xsd:enumeration value="Italian" />
+			<xsd:enumeration value="Japanese" />
+			<xsd:enumeration value="Latin" />
+			<xsd:enumeration value="Kosher" />
+			<xsd:enumeration value="Malaysian" />
+			<xsd:enumeration value="Mediterranean" />
+			<xsd:enumeration value="Mexican" />
+			<xsd:enumeration value="Moroccan" />
+			<xsd:enumeration value="Pacific Rim" />
+			<xsd:enumeration value="Pizza" />
+			<xsd:enumeration value="Portuguese" />
+			<xsd:enumeration value="Russian" />
+			<xsd:enumeration value="Sandwiches" />
+			<xsd:enumeration value="Seafood" />
+			<xsd:enumeration value="Soup" />
+			<xsd:enumeration value="Southwest" />
+			<xsd:enumeration value="Southern Cuisine" />
+			<xsd:enumeration value="Spanish" />
+			<xsd:enumeration value="Steakhouse" />
+			<xsd:enumeration value="Sunday Brunch" />
+			<xsd:enumeration value="Sushi" />
+			<xsd:enumeration value="Tapas" />
+			<xsd:enumeration value="Thai" />
+			<xsd:enumeration value="Ukrainian" />
+			<xsd:enumeration value="Vegetarian" />
+			<xsd:enumeration value="Vietnamese" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="OnlineReservation">
+		<xsd:sequence>
+			<xsd:element name="online_reservation_name" minOccurs="1"
+				maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="2"></xsd:minLength>
+						<xsd:maxLength value="50"></xsd:maxLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="online_reservation_url" type="tns:UrlType" />
+		</xsd:sequence>
+		<xsd:attribute name="type" use="required" type="tns:OnlineType" />
+	</xsd:complexType>
+
+	<xsd:complexType name="OnlineOrdering">
+		<xsd:sequence>
+			<xsd:element name="online_order_name">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="2"></xsd:minLength>
+						<xsd:maxLength value="50"></xsd:maxLength>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="online_order_url" type="tns:UrlType" />
+		</xsd:sequence>
+		<xsd:attribute name="type" use="required" type="tns:OnlineType" />
+	</xsd:complexType>
+
+	<xsd:simpleType name="OnlineType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="web"></xsd:enumeration>
+			<xsd:enumeration value="mobile"></xsd:enumeration>
+			<xsd:enumeration value="web/mobile"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="MenuItemAllergyInformation">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="0"></xsd:minLength>
+			<xsd:maxLength value="450"></xsd:maxLength>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

@@ -1,0 +1,173 @@
+import java.io.File;
+
+import org.hibernate.tool.hbm2ddl.SchemaExport
+
+defaultTasks 'build'
+
+apply plugin: 'java'
+apply plugin: 'war'
+	
+buildscript {
+	repositories {
+		mavenCentral()
+		maven {
+			url 'https://repository.jboss.org/nexus/content/groups/public'
+			url 'http://repo.springsource.org/libs-milestone'
+		}
+	}
+	dependencies {
+		classpath "org.hibernate:hibernate-entitymanager:$versionHibernate"
+	}
+}
+
+repositories {
+	mavenCentral()
+	
+	maven {
+		url "http://repository.springsource.com/maven/bundles/external"
+	}
+	
+	maven {
+		url "http://repository.springsource.com/maven/bundles/release"
+	}
+}
+
+configurations {
+	jaxb
+}
+
+dependencies {
+
+	compile (
+		"org.hibernate:hibernate-entitymanager:$versionHibernate",
+		"org.springframework:spring-core:$versionSpring",
+		"org.springframework:spring-context:$versionSpring",
+		"org.springframework:spring-orm:$versionSpring",
+		"org.springframework:spring-web:$versionSpring",
+		"com.sun.jersey:jersey-core:$versionJersey",
+		"com.sun.jersey:jersey-server:$versionJersey",
+		"com.sun.jersey:jersey-servlet:$versionJersey",
+		"com.sun.jersey:jersey-json:$versionJersey",
+		"com.sun.jersey.contribs:jersey-spring:$versionJersey",
+		"ch.qos.logback:logback-core:$versionLogback",
+		"ch.qos.logback:logback-classic:$versionLogback",
+		"commons-io:commons-io:2.4",
+		"org.slf4j:log4j-over-slf4j:1.6.4",
+		"javax.xml.bind:jaxb-api:2.2.7",
+		"com.sun.xml.bind:jaxb-impl:2.2.6",
+		'joda-time:joda-time:2.1',
+		'joda-time:joda-time-hibernate:1.3',
+		'mysql:mysql-connector-java:5.1.21',
+		'org.springframework.data:spring-data-jpa:1.1.1.RELEASE',
+		'commons-dbcp:commons-dbcp:1.4',
+	)
+	
+	jaxb (
+		"javax.xml.bind:jaxb-api:2.2.7",
+		"com.sun.xml.bind:jaxb-xjc:2.2.6",
+		"com.sun.xml.bind:jaxb-impl:2.2.6"
+	)
+	
+	jaxb ("com.github.jaxb-xew-plugin:jaxb-xew-plugin:1.0") {
+		transitive = false
+	}
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+task xjc()  {
+	doLast{
+		ant {
+			taskdef(name:'xjc',
+				classname: 'com.sun.tools.xjc.XJCTask',
+				classpath: configurations.jaxb.asPath)
+
+			xjc(destdir: 'src/main/java-gen', package:'net.dynamichorizons.rp.domain.menu', classpath: configurations.compile.asPath) {
+					schema(dir: 'src/main/xsd', includes: '*.xsd')
+					arg(value: '-Xxew')
+					arg(value: '-Xxew:instantiate lazy')
+					arg(value: '-Xxew:delete')
+			}
+		}
+	}
+}
+
+task ddl(type: HibernateJpaSchemaGenerationTask, dependsOn: [compileJava,
+			processResources])
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '1.0'
+}
+
+class HibernateJpaSchemaGenerationTask extends DefaultTask {
+
+	def Map<String, String> dialects = [MYSQL5INNODB:"org.hibernate.dialect.MySQL5InnoDBDialect"]
+
+	def source = project.sourceSets.main.output.classesDir
+	def target = new File('build/output')
+
+	@TaskAction
+	def performSchemaGeneration() {
+
+		target.mkdirs()
+		
+		assert source.isDirectory()
+		assert target.isDirectory()
+		
+		def urls = []
+		urls.add(source.toURI().toURL())
+		project.configurations.compile.each { File file -> urls.add(file.toURI().toURL()) }
+
+		URLClassLoader loader = new URLClassLoader(urls as URL[], getClass().getClassLoader())
+
+		def clazzez = []
+		source.eachFileRecurse { file ->
+			if (file.name.endsWith('.class') &&
+					file.absolutePath.contains('domain\\menu') &&
+					!file.name.contains('Adapter')) {
+				println file.absolutePath
+				def classRelPath = file.absolutePath - source.absolutePath
+				clazzez << classRelPath[1..-7].replace(System.properties['file.separator'], '.')
+			}
+		}
+
+		ClassLoader prev = Thread.currentThread().getContextClassLoader()
+		try {
+			// Need to set our class loader to the current thread
+			Thread.currentThread().setContextClassLoader(loader)
+			
+			org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration()
+			cfg.properties['hibernate.hbm2ddl.auto'] = 'create'
+	
+			clazzez.each { clazz ->
+				try {
+					println "Trying to load class ${clazz}"
+					Class possibleJpaEntity = Class.forName(clazz, true, loader)
+					println "Class ${clazz} sucessfully loaded"
+	
+					if(possibleJpaEntity.isAnnotationPresent(javax.persistence.Entity.class)) {
+						cfg.addAnnotatedClass(possibleJpaEntity)
+					} else {
+						println("Ignoring class ${possibleJpaEntity.getCanonicalName()} since it has no javax.persistence.Entity annotation present")
+					}
+				} catch (Exception e) {
+					println e
+				}
+			}
+			
+			dialects.each { key, value ->
+				final file = new File(target,"ddl_${key.toLowerCase()}.sql")
+				println "Writing to ${file.absolutePath}"
+				cfg.setProperty("hibernate.dialect", value)
+
+				SchemaExport export = new org.hibernate.tool.hbm2ddl.SchemaExport(cfg)
+				export.delimiter = ';'
+				export.outputFile = file.absolutePath
+				export.execute true, false, false, false
+			}
+		} finally {
+			Thread.currentThread().setContextClassLoader(prev)
+		}
+	}
+}
