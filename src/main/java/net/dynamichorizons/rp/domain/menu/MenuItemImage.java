@@ -17,13 +17,10 @@
  */
 package net.dynamichorizons.rp.domain.menu;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -31,28 +28,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import net.dynamichorizons.rp.domain.base.AbstractEntity;
+
 @XmlRootElement( name = "menu_item_image" )
 @XmlAccessorType( XmlAccessType.FIELD )
 @XmlType( name = "MenuItemImage" )
 @Entity
 @Table( name = "TBL_MENU_ITEM_IMAGE" )
+@AttributeOverride( name = "id", column = @Column( name = "MENU_ITEM_IMAGE_ID" ) )
 public class MenuItemImage
+    extends AbstractEntity<Long>
 {
 
-    @Id
-    @XmlAttribute( name = "id" )
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
-    @Column( name = "MENU_ITEM_IMAGE_ID", unique = true )
-    protected Long id;
-    
+    private static final long serialVersionUID = 9089663846396980114L;
+
     @XmlTransient
     @Column( name = "MENU_GROUP_ITEM_ID" )
     protected Long menuGroupItemId;
-
-    @XmlTransient
-    @Version
-    @Column( name = "OPTLOCK" )
-    protected Integer version;
 
     @XmlAttribute( name = "width" )
     @Column( name = "MENU_ITEM_IMAGE_WIDTH", nullable = true )
@@ -72,16 +64,6 @@ public class MenuItemImage
 
     public MenuItemImage()
     {
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId( Long id )
-    {
-        this.id = id;
     }
 
     public Long getMenuGroupItemId()

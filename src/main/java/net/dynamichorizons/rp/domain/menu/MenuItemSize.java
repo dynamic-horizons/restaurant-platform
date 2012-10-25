@@ -17,20 +17,18 @@
  */
 package net.dynamichorizons.rp.domain.menu;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
+import net.dynamichorizons.rp.domain.base.AbstractEntity;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -42,23 +40,16 @@ import org.apache.commons.lang.builder.ToStringBuilder;
     "menuItemSizeCalories" } )
 @Entity
 @Table( name = "TBL_MENU_ITEM_SIZE" )
+@AttributeOverride( name = "id", column = @Column( name = "MENU_ITEM_SIZE_ID" ) )
 public class MenuItemSize
+    extends AbstractEntity<Long>
 {
 
-    @Id
-    @XmlAttribute( name = "id" )
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
-    @Column( name = "MENU_ITEM_SIZE_ID", unique = true )
-    protected Long id;
+    private static final long serialVersionUID = -1747431564543309161L;
 
     @XmlTransient
     @Column( name = "MENU_GROUP_ITEM_ID" )
     protected Long menuGroupItemId;
-
-    @XmlTransient
-    @Version
-    @Column( name = "OPTLOCK" )
-    protected Integer version;
 
     @XmlElement( name = "menu_item_size_name", required = true )
     @Column( name = "MENU_ITEM_SIZE_NAME", nullable = false, length = 25 )
@@ -78,16 +69,6 @@ public class MenuItemSize
 
     public MenuItemSize()
     {
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId( Long id )
-    {
-        this.id = id;
     }
 
     public Long getMenuGroupItemId()
@@ -142,7 +123,7 @@ public class MenuItemSize
 
     public String toString()
     {
-        return new ToStringBuilder( this ).append( "id", id ).append( "name", menuItemSizeName ).toString();
+        return new ToStringBuilder( this ).append( "id", getId() ).append( "name", menuItemSizeName ).toString();
     }
 
 }

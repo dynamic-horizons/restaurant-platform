@@ -17,8 +17,6 @@
  */
 package net.dynamichorizons.rp.rest.service.menu;
 
-import java.util.UUID;
-
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -61,7 +59,7 @@ public class MenuItemWebService
     @GET
     @Path( "/{menuItemId}" )
     public MenuItem getMenuItem( @PathParam( "menuItemId" )
-    UUID menuItemId )
+    Long menuItemId )
     {
         MenuItem result = menuItemRepository.findOne( menuItemId );
 
@@ -93,7 +91,7 @@ public class MenuItemWebService
     @PUT
     @Path( "/{menuItemId}" )
     public MenuItem modifyMenuItem( @PathParam( "menuItemId" )
-    UUID menuItemId, MenuItem menuItem )
+    Long menuItemId, MenuItem menuItem )
     {
         MenuItem result = menuItemRepository.save( menuItem );
 
@@ -110,7 +108,7 @@ public class MenuItemWebService
     @DELETE
     @Path( "/{menuItemId}" )
     public void deleteMenuItem( @PathParam( "menuItemId" )
-    UUID menuItemId )
+    Long menuItemId )
     {
         menuItemRepository.delete( menuItemId );
     }

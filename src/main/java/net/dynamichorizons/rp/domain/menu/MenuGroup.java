@@ -17,22 +17,18 @@
  */
 package net.dynamichorizons.rp.domain.menu;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -41,44 +37,28 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import net.dynamichorizons.rp.domain.UuidXmlAdapter;
+import net.dynamichorizons.rp.domain.base.AbstractEntity;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 @XmlRootElement( name = "menu_group" )
 @XmlAccessorType( XmlAccessType.FIELD )
 @XmlType( name = "MenuGroup", propOrder = { "menuGroupDescription", "menuGroupNote", "menuItems", "menuGroupOptions" } )
 @Entity
 @Table( name = "TBL_MENU_GROUP" )
+@AttributeOverride( name = "id", column = @Column( name = "MENU_GROUP_UID" ) )
 public class MenuGroup
-    implements Serializable
+extends AbstractEntity<Long>
 {
 
     private static final long serialVersionUID = -229485181478103996L;
 
-    @Id
-    @XmlAttribute( name = "uid", required = true )
-    @XmlJavaTypeAdapter( UuidXmlAdapter.class )
-    @GeneratedValue( generator = "uuid" )
-    @GenericGenerator( name = "uuid", strategy = "uuid2" )
-    @Column( name = "MENU_GROUP_UID", unique = true, columnDefinition = "BINARY(16)" )
-    @Type( type = "uuid-char" )
-    protected UUID uid;
-
-    @XmlTransient
-    @Version
-    @Column( name = "OPTLOCK" )
-    protected Integer version;
-
     @XmlTransient
     @ManyToOne
-    @JoinColumn( name = "MENU_UID" )
+    @JoinColumn( name = "MENU_ID" )
     protected Menu parentMenu;
 
     @XmlAttribute( name = "group_name", required = true )
@@ -115,16 +95,6 @@ public class MenuGroup
 
     public MenuGroup()
     {
-    }
-
-    public UUID getUid()
-    {
-        return uid;
-    }
-
-    public void setUid( UUID uid )
-    {
-        this.uid = uid;
     }
 
     public Menu getParentMenu()
@@ -217,7 +187,7 @@ public class MenuGroup
 
     public String toString()
     {
-        return new ToStringBuilder( this ).append( "uid", uid ).append( "name", name ).append( "menuItems",
+        return new ToStringBuilder( this ).append( "id", getId() ).append( "name", name ).append( "menuItems",
                                                                                                getMenuItems() ).toString();
     }
 }

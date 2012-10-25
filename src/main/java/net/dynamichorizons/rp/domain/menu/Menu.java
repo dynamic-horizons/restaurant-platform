@@ -17,21 +17,17 @@
  */
 package net.dynamichorizons.rp.domain.menu;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -40,40 +36,24 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import net.dynamichorizons.rp.domain.UuidXmlAdapter;
+import net.dynamichorizons.rp.domain.base.AbstractEntity;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 @XmlRootElement( name = "menu" )
 @XmlAccessorType( XmlAccessType.FIELD )
 @XmlType( name = "Menu", propOrder = { "menuDescription", "menuNote", "menuDuration", "menuGroups" } )
 @Entity
 @Table( name = "TBL_MENU" )
+@AttributeOverride( name = "id", column = @Column( name = "MENU_ITEM_SIZE_ID" ) )
 public class Menu
-    implements Serializable
+    extends AbstractEntity<Long>
 {
 
     private static final long serialVersionUID = 7126859430093600619L;
-
-    @Id
-    @XmlAttribute( name = "uid", required = true )
-    @XmlJavaTypeAdapter( UuidXmlAdapter.class )
-    @GeneratedValue( generator = "uuid" )
-    @GenericGenerator( name = "uuid", strategy = "uuid2" )
-    @Column( name = "MENU_UID", unique = true, columnDefinition = "BINARY(16)" )
-    @Type( type = "uuid-char" )
-    protected UUID uid;
-
-    @XmlTransient
-    @Version
-    @Column( name = "OPTLOCK" )
-    protected Integer version;
 
     @XmlAttribute( name = "name", required = true )
     @Column( name = "MENU_NAME", nullable = false, length = 50 )
@@ -103,9 +83,9 @@ public class Menu
     @Embedded
     protected MenuDuration menuDuration;
 
-    @XmlElementWrapper(name = "menu_groups", required = true)
+    @XmlElementWrapper( name = "menu_groups", required = true )
     @XmlElement( name = "menu_group" )
-    @OrderBy("orderBy ASC")
+    @OrderBy( "orderBy ASC" )
     @OneToMany( mappedBy = "parentMenu", fetch = FetchType.EAGER )
     @Fetch( value = FetchMode.SELECT )
     protected List<MenuGroup> menuGroups;
@@ -234,26 +214,6 @@ public class Menu
         this.language = value;
     }
 
-    /**
-     * Gets the value of the uid property.
-     * 
-     * @return possible object is {@link String }
-     */
-    public UUID getUid()
-    {
-        return uid;
-    }
-
-    /**
-     * Sets the value of the uid property.
-     * 
-     * @param value allowed object is {@link String }
-     */
-    public void setUid( UUID value )
-    {
-        this.uid = value;
-    }
-
     public List<MenuGroup> getMenuGroups()
     {
         if ( menuGroups == null )
@@ -270,6 +230,7 @@ public class Menu
 
     public String toString()
     {
-        return new ToStringBuilder( this ).append( "uid", uid ).append( "name", name ).append( "menuKey", menuKey ).append( "menuGroups", getMenuGroups() ).toString();
+        return new ToStringBuilder( this ).append( "id", getId() ).append( "name", name ).append( "menuKey", menuKey ).append( "menuGroups",
+                                                                                                                               getMenuGroups() ).toString();
     }
 }

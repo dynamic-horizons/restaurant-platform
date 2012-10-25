@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -86,12 +85,12 @@ public class MenuWebService
             throw new ContentNotFoundException();
         }
     }
-    
+
     @GET
     @Path( "/menuGroupMap" )
-    public Map<String, Map<String, UUID>> getMenuGroupMap()
+    public Map<String, Map<String, Long>> getMenuGroupMap()
     {
-        Map<String, Map<String, UUID>> result = menuService.getMenuGroupMap();
+        Map<String, Map<String, Long>> result = menuService.getMenuGroupMap();
 
         if ( result != null )
         {

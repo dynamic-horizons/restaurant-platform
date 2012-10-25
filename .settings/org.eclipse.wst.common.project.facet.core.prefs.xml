@@ -7,4 +7,9 @@
       <attribute name="platform-id" value="generic_2_1"/>
     </node>
   </facet>
+  <facet id="jpt.jpa">
+    <node name="libprov">
+      <attribute name="provider-id" value="jpa-no-op-library-provider"/>
+    </node>
+  </facet>
 </root>

@@ -17,25 +17,21 @@
  */
 package net.dynamichorizons.rp.domain.menu;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -44,15 +40,12 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import net.dynamichorizons.rp.domain.UuidXmlAdapter;
+import net.dynamichorizons.rp.domain.base.AbstractEntity;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 @XmlRootElement( name = "menu_item" )
 @XmlAccessorType( XmlAccessType.FIELD )
@@ -68,35 +61,21 @@ import org.hibernate.annotations.Type;
     "menuItemTags" } )
 @Entity
 @Table( name = "TBL_MENU_ITEM" )
+@AttributeOverride( name = "id", column = @Column( name = "MENU_ITEM_ID" ) )
 @SecondaryTable( name = "TBL_MENU_GROUP_ITEM", pkJoinColumns = @PrimaryKeyJoinColumn( name = "MENU_ITEM_UID" ) )
 public class MenuItem
-    implements Serializable
+    extends AbstractEntity<Long>
 {
 
     private static final long serialVersionUID = 3133311116453300308L;
-
-    @Id
-    @XmlAttribute( name = "uid", required = true )
-    @XmlJavaTypeAdapter( UuidXmlAdapter.class )
-    @GeneratedValue( generator = "uuid" )
-    @GenericGenerator( name = "uuid", strategy = "uuid2" )
-    @Column( name = "MENU_ITEM_UID", unique = true, columnDefinition = "BINARY(16)" )
-    @Type( type = "uuid-char" )
-    protected UUID uid;
-
-    @XmlTransient
-    @Version
-    @Column( name = "OPTLOCK" )
-    protected Integer version;
 
     @XmlTransient
     @Column( name = "MENU_GROUP_ITEM_ID", table = "TBL_MENU_GROUP_ITEM" )
     protected Long menuGroupItemId;
 
     @XmlTransient
-    @Column( name = "MENU_GROUP_UID", table = "TBL_MENU_GROUP_ITEM", columnDefinition = "BINARY(16)"  )
-    @Type( type = "uuid-char" )
-    protected UUID menuGroupUid;
+    @Column( name = "MENU_GROUP_ID", table = "TBL_MENU_GROUP_ITEM" )
+    protected Long menuGroupId;
 
     @XmlElement( name = "menu_item_name" )
     @Column( name = "MENU_ITEM_NAME", nullable = true, length = 75 )
@@ -150,22 +129,22 @@ public class MenuItem
     @Column( name = "IS_GLUTEN_FREE", nullable = true )
     protected Boolean glutenFree;
 
-    @XmlElementWrapper(name = "menu_item_image_urls", required = true)
+    @XmlElementWrapper( name = "menu_item_image_urls", required = true )
     @XmlElement( name = "menu_item_image_url" )
     @Transient
     protected List<MenuItemImage> menuItemImageUrls;
 
-    @XmlElementWrapper(name = "menu_item_sizes", required = true)
+    @XmlElementWrapper( name = "menu_item_sizes", required = true )
     @XmlElement( name = "menu_item_size" )
     @Transient
     protected List<MenuItemSize> menuItemSizes;
 
-    @XmlElementWrapper(name = "menu_item_options", required = true)
+    @XmlElementWrapper( name = "menu_item_options", required = true )
     @XmlElement( name = "menu_item_option" )
     @Transient
     protected List<MenuItemOption> menuItemOptions;
 
-    @XmlElementWrapper(name = "menu_item_tags", required = true)
+    @XmlElementWrapper( name = "menu_item_tags", required = true )
     @XmlElement( name = "menu_item_tag" )
     @ElementCollection( fetch = FetchType.EAGER )
     @CollectionTable( name = "TBL_MENU_ITEM_TAGS", joinColumns = @JoinColumn( name = "MENU_ITEM_UID" ) )
@@ -175,16 +154,6 @@ public class MenuItem
 
     public MenuItem()
     {
-    }
-
-    public UUID getUid()
-    {
-        return uid;
-    }
-
-    public void setUid( UUID uid )
-    {
-        this.uid = uid;
     }
 
     public Long getMenuGroupItemId()
@@ -197,14 +166,14 @@ public class MenuItem
         this.menuGroupItemId = menuGroupItemId;
     }
 
-    public UUID getMenuGroupUid()
+    public Long getMenuGroupId()
     {
-        return menuGroupUid;
+        return menuGroupId;
     }
 
-    public void setMenuGroupUid( UUID menuGroupUid )
+    public void setMenuGroupUid( Long menuGroupId )
     {
-        this.menuGroupUid = menuGroupUid;
+        this.menuGroupId = menuGroupId;
     }
 
     public String getMenuItemName()
@@ -395,7 +364,7 @@ public class MenuItem
 
     public String toString()
     {
-        return new ToStringBuilder( this ).append( "uid", uid ).append( "name", menuItemName ).append( "menuItemSizes",
-                                                                                                       getMenuItemSizes() ).toString();
+        return new ToStringBuilder( this ).append( "uid", getId() ).append( "name", menuItemName ).append( "menuItemSizes",
+                                                                                                           getMenuItemSizes() ).toString();
     }
 }

@@ -17,15 +17,12 @@
  */
 package net.dynamichorizons.rp.domain.menu;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -38,22 +35,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import net.dynamichorizons.rp.domain.base.AbstractEntity;
+
 @XmlRootElement( name = "menu_group_option" )
 @XmlAccessorType( XmlAccessType.FIELD )
 @XmlType( name = "MenuGroupOption", propOrder = { "menuGroupOptionInformation", "menuGroupOptionItems" } )
 @Entity
+@AttributeOverride( name = "id", column = @Column( name = "MENU_GROUP_OPTION_ID" ) )
 @Table( name = "TBL_MENU_GROUP_OPTION" )
 public class MenuGroupOption
-    implements Serializable
+    extends AbstractEntity<Long>
 {
 
     private static final long serialVersionUID = 3543542167300762228L;
-
-    @Id
-    @XmlAttribute( name = "id" )
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
-    @Column( name = "MENU_GROUP_OPTION_ID", unique = true )
-    protected Long id;
 
     @XmlTransient
     @Version
@@ -67,7 +61,7 @@ public class MenuGroupOption
     @XmlElement( name = "menu_group_option_information", required = true )
     @Column( name = "MENU_GROUP_OPTION_INFO", nullable = true, length = 255 )
     protected String menuGroupOptionInformation;
-    
+
     @XmlAttribute( name = "min_selected" )
     @Column( name = "MENU_GROUP_OPTION_MIN_SELECTED", nullable = true )
     protected Integer minSelected;
@@ -76,23 +70,13 @@ public class MenuGroupOption
     @Column( name = "MENU_GROUP_OPTION_MAX_SELECTED", nullable = true )
     protected Integer maxSelected;
 
-    @XmlElementWrapper(name = "menu_group_option_items", required = true)
-    @XmlElement( name = "menu_group_option_item" )
+    @XmlElementWrapper( name = "menu_item_option_items", required = true )
+    @XmlElement( name = "menu_item_option_item" )
     @OneToMany( mappedBy = "parentMenuGroupOption" )
     protected List<MenuGroupOptionItem> menuGroupOptionItems;
 
     public MenuGroupOption()
     {
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId( Long id )
-    {
-        this.id = id;
     }
 
     /**

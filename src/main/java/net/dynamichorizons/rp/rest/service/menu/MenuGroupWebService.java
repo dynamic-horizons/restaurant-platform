@@ -67,7 +67,7 @@ public class MenuGroupWebService
     @GET
     @Path( "/{menuGroupId}" )
     public MenuGroup getMenuGroup( @PathParam( "menuGroupId" )
-    UUID menuGroupId )
+    Long menuGroupId )
     {
         MenuGroup result = menuGroupRepository.findOne( menuGroupId );
 
@@ -84,9 +84,9 @@ public class MenuGroupWebService
     @GET
     @Path( "/{menuGroupId}/items" )
     public MenuItem[] getMenuGroupItems( @PathParam( "menuGroupId" )
-    UUID menuGroupId )
+    Long menuGroupId )
     {
-        List<MenuItem> menuItems = menuItemRepository.findByMenuGroupUid( menuGroupId );
+        List<MenuItem> menuItems = menuItemRepository.findByMenuGroupId( menuGroupId );
 
         if ( menuItems != null && menuItems.size() > 0 )
         {
@@ -134,7 +134,7 @@ public class MenuGroupWebService
     @DELETE
     @Path( "/{menuItemId}" )
     public void deleteMenuGroup( @PathParam( "menuGroupId" )
-    UUID menuGroupId )
+    Long menuGroupId )
     {
         menuGroupRepository.delete( menuGroupId );
     }

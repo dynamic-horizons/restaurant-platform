@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
@@ -88,17 +87,17 @@ public class MenuService
         return menuKeyNameMap;
     }
 
-    public Map<String, Map<String, UUID>> getMenuGroupMap()
+    public Map<String, Map<String, Long>> getMenuGroupMap()
     {
         cacheMenus();
 
-        Map<String, Map<String, UUID>> menuGroupMap = new HashMap<String, Map<String, UUID>>();
+        Map<String, Map<String, Long>> menuGroupMap = new HashMap<String, Map<String, Long>>();
         for ( Menu menu : menuCache.values() )
         {
-            Map<String, UUID> menuIdMap = new HashMap<String, UUID>();
+            Map<String, Long> menuIdMap = new HashMap<String, Long>();
             for ( MenuGroup menuGroup : menu.getMenuGroups() )
             {
-                menuIdMap.put( menuGroup.getName(), menuGroup.getUid() );
+                menuIdMap.put( menuGroup.getName(), menuGroup.getId() );
             }
 
             menuGroupMap.put( menu.getName(), menuIdMap );
@@ -148,7 +147,7 @@ public class MenuService
     {
         for ( MenuGroup menuGroup : menu.getMenuGroups() )
         {
-            menuGroup.setMenuItems( menuItemRepository.findByMenuGroupUid( menuGroup.getUid() ) );
+            menuGroup.setMenuItems( menuItemRepository.findByMenuGroupId( menuGroup.getId() ) );
 
             for ( MenuItem menuItem : menuGroup.getMenuItems() )
             {

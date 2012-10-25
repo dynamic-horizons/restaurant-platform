@@ -17,36 +17,33 @@
  */
 package net.dynamichorizons.rp.domain.menu;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import net.dynamichorizons.rp.domain.base.AbstractEntity;
+
 @XmlRootElement( name = "menu_group_option_item" )
 @XmlAccessorType( XmlAccessType.FIELD )
 @XmlType( name = "MenuGroupOptionItem", propOrder = { "menuGroupOptionName", "menuGroupOptionAdditionalCost" } )
 @Entity
+@AttributeOverride( name = "id", column = @Column( name = "MENU_GROUP_OPTION_ITEM_ID" ) )
 @Table( name = "TBL_MENU_GROUP_OPTION_ITEM" )
 public class MenuGroupOptionItem
+    extends AbstractEntity<Long>
 {
 
-    @Id
-    @XmlAttribute( name = "id" )
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
-    @Column( name = "MENU_GROUP_OPTION_ITEM_ID", unique = true )
-    protected Long id;
+    private static final long serialVersionUID = -439513214245314030L;
 
     @XmlTransient
     @Version
@@ -68,16 +65,6 @@ public class MenuGroupOptionItem
 
     public MenuGroupOptionItem()
     {
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId( Long id )
-    {
-        this.id = id;
     }
 
     public MenuGroupOption getParentMenuGroupOption()
