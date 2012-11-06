@@ -46,6 +46,8 @@ dependencies {
 	    "org.springframework:spring-context:$versionSpring",
 	    "org.springframework:spring-orm:$versionSpring",
 	    "org.springframework:spring-web:$versionSpring",
+	    "org.springframework:spring-aop:$versionSpring",
+	    "org.springframework:spring-aspects:$versionSpring",
 	    "com.sun.jersey:jersey-core:$versionJersey",
 	    "com.sun.jersey:jersey-server:$versionJersey",
 	    "com.sun.jersey:jersey-servlet:$versionJersey",
@@ -58,7 +60,6 @@ dependencies {
 		'commons-lang:commons-lang:2.6',
 		'org.apache.xmlgraphics:fop:1.0',
 		'org.slf4j:slf4j-api:$versionSlf4j',
-	    "org.slf4j:log4j-over-slf4j:$versionSlf4j",
 	    "javax.xml.bind:jaxb-api:2.2.7",
 	    "com.sun.xml.bind:jaxb-impl:2.2.6",
 	    'com.googlecode.usc:jdbcdslog:1.0.6.2',
@@ -67,7 +68,9 @@ dependencies {
 	    'mysql:mysql-connector-java:5.1.21',
 	    'org.springframework.data:spring-data-jpa:1.1.1.RELEASE',
 	    'commons-dbcp:commons-dbcp:1.4',
-	    'com.fasterxml.jackson.datatype:jackson-datatype-hibernate4:2.0.5'
+	    'com.fasterxml.jackson.datatype:jackson-datatype-hibernate4:2.0.5',
+	    'org.apache.shiro:shiro-core:1.2.1',
+	    'org.apache.shiro:shiro-spring:1.2.1',
     )
     
     testCompile (

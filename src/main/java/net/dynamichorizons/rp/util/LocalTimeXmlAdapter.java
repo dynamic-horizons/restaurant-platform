@@ -15,32 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package net.dynamichorizons.rp.rest.service;
+package net.dynamichorizons.rp.util;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import org.joda.time.LocalTime;
 
-import net.dynamichorizons.rp.stereotype.WebService;
-
-@WebService
-@Path( "/" )
-public class RestaurantWebService
+public class LocalTimeXmlAdapter
+    extends XmlAdapter<String, LocalTime>
 {
-    @GET
-    @Produces( MediaType.TEXT_PLAIN )
-    public String defaultService()
+
+    public LocalTime unmarshal( String value )
     {
-        return "Restaurant Platform REST Service";
+        return ( net.dynamichorizons.rp.util.DatatypeConverter.parseTime( value ) );
     }
 
-    @GET
-    @Path( "/build" )
-    @Produces( MediaType.TEXT_PLAIN )
-    public String buildInformation()
+    public String marshal( LocalTime value )
     {
-        return "Restaurant Platform - V1.0";
+        return ( net.dynamichorizons.rp.util.DatatypeConverter.printTime( value ) );
     }
 
 }

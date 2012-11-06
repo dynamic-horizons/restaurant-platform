@@ -15,32 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package net.dynamichorizons.rp.rest.service;
+package net.dynamichorizons.rp.domain.restaurant;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
-import net.dynamichorizons.rp.stereotype.WebService;
-
-@WebService
-@Path( "/" )
-public class RestaurantWebService
+public class Restaurant
 {
-    @GET
-    @Produces( MediaType.TEXT_PLAIN )
-    public String defaultService()
+
+    private String restaurantName;
+
+    public Restaurant()
     {
-        return "Restaurant Platform REST Service";
     }
 
-    @GET
-    @Path( "/build" )
-    @Produces( MediaType.TEXT_PLAIN )
-    public String buildInformation()
+    public Restaurant( String restaurantName )
     {
-        return "Restaurant Platform - V1.0";
+        this.restaurantName = restaurantName;
+    }
+
+    public String getRestaurantName()
+    {
+        return restaurantName;
+    }
+
+    public void setRestaurantName( String restaurantName )
+    {
+        this.restaurantName = restaurantName;
     }
 
 }

@@ -15,32 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package net.dynamichorizons.rp.rest.service;
+package net.dynamichorizons.rp.util;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import java.util.UUID;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import net.dynamichorizons.rp.stereotype.WebService;
-
-@WebService
-@Path( "/" )
-public class RestaurantWebService
+public class UuidXmlAdapter
+    extends XmlAdapter<String, UUID>
 {
-    @GET
-    @Produces( MediaType.TEXT_PLAIN )
-    public String defaultService()
+
+    public UUID unmarshal( String value )
     {
-        return "Restaurant Platform REST Service";
+        return ( net.dynamichorizons.rp.util.DatatypeConverter.parseUuid( value ) );
     }
 
-    @GET
-    @Path( "/build" )
-    @Produces( MediaType.TEXT_PLAIN )
-    public String buildInformation()
+    public String marshal( UUID value )
     {
-        return "Restaurant Platform - V1.0";
+        return ( net.dynamichorizons.rp.util.DatatypeConverter.printUuid( value ) );
     }
 
 }

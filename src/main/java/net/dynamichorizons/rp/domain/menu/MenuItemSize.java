@@ -21,23 +21,11 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 
 import net.dynamichorizons.rp.domain.base.AbstractEntity;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-@XmlRootElement( name = "menu_item_size" )
-@XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "MenuItemSize", propOrder = { "menuItemSizeName",
-    "menuItemSizeDescription",
-    "menuItemSizePrice",
-    "menuItemSizeCalories" } )
 @Entity
 @Table( name = "TBL_MENU_ITEM_SIZE" )
 @AttributeOverride( name = "id", column = @Column( name = "MENU_ITEM_SIZE_ID" ) )
@@ -47,23 +35,18 @@ public class MenuItemSize
 
     private static final long serialVersionUID = -1747431564543309161L;
 
-    @XmlTransient
     @Column( name = "MENU_GROUP_ITEM_ID" )
     protected Long menuGroupItemId;
 
-    @XmlElement( name = "menu_item_size_name", required = true )
     @Column( name = "MENU_ITEM_SIZE_NAME", nullable = false, length = 25 )
     protected String menuItemSizeName;
 
-    @XmlElement( name = "menu_item_size_description" )
     @Column( name = "MENU_ITEM_SIZE_DESC", nullable = true, length = 120 )
     protected String menuItemSizeDescription;
 
-    @XmlElement( name = "menu_item_size_calories" )
     @Column( name = "MENU_ITEM_SIZE_CALORIES", nullable = true )
     protected Integer menuItemSizeCalories;
 
-    @XmlElement( name = "menu_item_size_price" )
     @Column( name = "MENU_ITEM_SIZE_PRICE", nullable = true )
     protected Double menuItemSizePrice;
 

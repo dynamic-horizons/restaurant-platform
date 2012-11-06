@@ -32,14 +32,6 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 
 import net.dynamichorizons.rp.domain.base.AbstractEntity;
 
@@ -47,107 +39,72 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-@XmlRootElement( name = "menu_item" )
-@XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "MenuItem", propOrder = { "menuItemName",
-    "menuItemDescription",
-    "menuItemPrice",
-    "menuItemCalories",
-    "menuItemAllergyInformation",
-    "menuItemHeatIndex",
-    "menuItemImageUrls",
-    "menuItemSizes",
-    "menuItemOptions",
-    "menuItemTags" } )
 @Entity
 @Table( name = "TBL_MENU_ITEM" )
 @AttributeOverride( name = "id", column = @Column( name = "MENU_ITEM_ID" ) )
-@SecondaryTable( name = "TBL_MENU_GROUP_ITEM", pkJoinColumns = @PrimaryKeyJoinColumn( name = "MENU_ITEM_UID" ) )
+@SecondaryTable( name = "TBL_MENU_GROUP_ITEM", pkJoinColumns = @PrimaryKeyJoinColumn( name = "MENU_ITEM_ID" ) )
 public class MenuItem
     extends AbstractEntity<Long>
 {
 
     private static final long serialVersionUID = 3133311116453300308L;
 
-    @XmlTransient
     @Column( name = "MENU_GROUP_ITEM_ID", table = "TBL_MENU_GROUP_ITEM" )
     protected Long menuGroupItemId;
 
-    @XmlTransient
     @Column( name = "MENU_GROUP_ID", table = "TBL_MENU_GROUP_ITEM" )
     protected Long menuGroupId;
 
-    @XmlElement( name = "menu_item_name" )
     @Column( name = "MENU_ITEM_NAME", nullable = true, length = 75 )
     protected String menuItemName;
 
-    @XmlElement( name = "menu_item_description" )
     @Column( name = "MENU_ITEM_DESC", nullable = true, length = 450 )
     protected String menuItemDescription;
 
-    @XmlElement( name = "menu_item_price" )
     @Column( name = "MENU_GROUP_ITEM_PRICE", nullable = true, table = "TBL_MENU_GROUP_ITEM" )
     protected Double menuItemPrice;
 
-    @XmlElement( name = "menu_item_allergy_information" )
     @Embedded
     protected MenuItemAllergyInformation menuItemAllergyInformation;
 
-    @XmlElement( name = "menu_item_calories" )
     @Column( name = "MENU_ITEM_CALORIES", nullable = true )
     protected Integer menuItemCalories;
 
-    @XmlElement( name = "menu_item_heat_index" )
     @Column( name = "MENU_ITEM_HEAT_INDEX", nullable = true )
     protected Integer menuItemHeatIndex;
 
-    @XmlAttribute( name = "disabled" )
     @Column( name = "IS_DISABLED", nullable = true )
     protected Boolean disabled;
 
-    @XmlAttribute( name = "special" )
     @Column( name = "IS_SPECIAL", nullable = true )
     protected Boolean special;
 
-    @XmlAttribute( name = "vegetarian" )
     @Column( name = "IS_VEGETARIAN", nullable = true )
     protected Boolean vegetarian;
 
-    @XmlAttribute( name = "vegan" )
     @Column( name = "IS_VEGAN", nullable = true )
     protected Boolean vegan;
 
-    @XmlAttribute( name = "kosher" )
     @Column( name = "IS_KOSHER", nullable = true )
     protected Boolean kosher;
 
-    @XmlAttribute( name = "halal" )
     @Column( name = "IS_HALAL", nullable = true )
     protected Boolean halal;
 
-    @XmlAttribute( name = "gluten_free" )
     @Column( name = "IS_GLUTEN_FREE", nullable = true )
     protected Boolean glutenFree;
 
-    @XmlElementWrapper( name = "menu_item_image_urls", required = true )
-    @XmlElement( name = "menu_item_image_url" )
     @Transient
     protected List<MenuItemImage> menuItemImageUrls;
 
-    @XmlElementWrapper( name = "menu_item_sizes", required = true )
-    @XmlElement( name = "menu_item_size" )
     @Transient
     protected List<MenuItemSize> menuItemSizes;
 
-    @XmlElementWrapper( name = "menu_item_options", required = true )
-    @XmlElement( name = "menu_item_option" )
     @Transient
     protected List<MenuItemOption> menuItemOptions;
 
-    @XmlElementWrapper( name = "menu_item_tags", required = true )
-    @XmlElement( name = "menu_item_tag" )
     @ElementCollection( fetch = FetchType.EAGER )
-    @CollectionTable( name = "TBL_MENU_ITEM_TAGS", joinColumns = @JoinColumn( name = "MENU_ITEM_UID" ) )
+    @CollectionTable( name = "TBL_MENU_ITEM_TAGS", joinColumns = @JoinColumn( name = "MENU_ITEM_ID" ) )
     @Fetch( value = FetchMode.SELECT )
     @Column( name = "MENU_ITEM_TAG" )
     protected List<String> menuItemTags;
@@ -171,7 +128,7 @@ public class MenuItem
         return menuGroupId;
     }
 
-    public void setMenuGroupUid( Long menuGroupId )
+    public void setMenuGroupId( Long menuGroupId )
     {
         this.menuGroupId = menuGroupId;
     }

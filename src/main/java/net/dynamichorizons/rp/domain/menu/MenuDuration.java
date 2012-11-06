@@ -19,38 +19,21 @@ package net.dynamichorizons.rp.domain.menu;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import net.dynamichorizons.rp.domain.LocalTimeXmlAdapter;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalTime;
 
-@XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "MenuDuration", propOrder = { "menuDurationName", "menuDurationTimeStart", "menuDurationTimeEnd" } )
 @Embeddable
 public class MenuDuration
 {
 
-    @XmlElement( name = "menu_duration_name", required = true )
     @Column( name = "MENU_DURATION_NAME", nullable = false )
     protected String menuDurationName;
 
-    @XmlElement( name = "menu_duration_time_start", type = String.class )
-    @XmlJavaTypeAdapter( LocalTimeXmlAdapter.class )
-    @XmlSchemaType( name = "time" )
     @Type( type = "org.jadira.usertype.dateandtime.joda.PersistentLocalTime" )
     @Column( name = "MENU_DURATION_START_TIME", nullable = true )
     protected LocalTime menuDurationTimeStart;
 
-    @XmlElement( name = "menu_duration_time_end", type = String.class )
-    @XmlJavaTypeAdapter( LocalTimeXmlAdapter.class )
-    @XmlSchemaType( name = "time" )
     @Type( type = "org.jadira.usertype.dateandtime.joda.PersistentLocalTime" )
     @Column( name = "MENU_DURATION_END_TIME", nullable = true )
     protected LocalTime menuDurationTimeEnd;

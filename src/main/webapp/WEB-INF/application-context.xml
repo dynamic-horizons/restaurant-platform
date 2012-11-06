@@ -18,11 +18,15 @@
 	<context:component-scan base-package="net.dynamichorizons.rp.rest.service" />
 	<context:component-scan base-package="net.dynamichorizons.rp.service" />
 
+	<bean id="auditorAware" class="net.dynamichorizons.rp.audit.DefaultAuditorAwareImpl" />
+
+	<jpa:auditing auditor-aware-ref="auditorAware" />
 	<jpa:repositories base-package="net.dynamichorizons.rp.store" />
 
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="get*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
 			<tx:method name="*" />
 		</tx:attributes>
 	</tx:advice>
@@ -36,15 +40,11 @@
 	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/RestaurantPlatformDB" />
 
 	<!-- Uncomment for JDBC DS Logging -->
-	<!--
-	<bean id="dataSource" class="org.jdbcdslog.ConnectionPoolDataSourceProxy">
-		<property name="targetDSDirect" ref="targetDataSource" />
-	</bean> 
-	-->
+	<!-- <bean id="dataSource" class="org.jdbcdslog.ConnectionPoolDataSourceProxy"> 
+		<property name="targetDSDirect" ref="targetDataSource" /> </bean> -->
 
-	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 
 	<bean id="entityManagerFactory"

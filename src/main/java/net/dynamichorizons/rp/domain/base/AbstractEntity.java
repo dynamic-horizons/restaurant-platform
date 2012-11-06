@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,46 +15,47 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
 
-import net.dynamichorizons.rp.domain.user.User;
+import net.dynamichorizons.rp.domain.User;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.joda.time.DateTime;
-import org.springframework.data.domain.Persistable;
+import org.springframework.data.domain.Auditable;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @MappedSuperclass
+@EntityListeners( value = { AuditingEntityListener.class } )
 public class AbstractEntity<PK extends Serializable>
-    implements Persistable<PK>
+    implements Auditable<User, PK>
 {
     private static final long serialVersionUID = 1743597881995402609L;
 
     @Id
-    @XmlAttribute( name = "id" )
+    // @XmlAttribute( name = "id" )
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private PK id;
 
-    @XmlTransient
-    @ManyToOne
+    // @XmlTransient
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn( name = "CREATE_USER_ID" )
     private User createdBy;
 
-    @XmlTransient
+    // @XmlTransient
     @Temporal( TemporalType.TIMESTAMP )
     @Column( name = "CREATE_DATE", nullable = true )
     private Date createdDate;
 
-    @XmlTransient
-    @ManyToOne
+    // @XmlTransient
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn( name = "MODIFY_USER_ID" )
     private User lastModifiedBy;
 
-    @XmlTransient
+    // @XmlTransient
     @Temporal( TemporalType.TIMESTAMP )
     @Column( name = "MODIFY_DATE", nullable = true )
     private Date lastModifiedDate;
 
-    @XmlTransient
+    // @XmlTransient
     @Version
     @Column( name = "OPTLOCK" )
     protected Integer version;
@@ -67,6 +70,7 @@ public class AbstractEntity<PK extends Serializable>
         this.id = id;
     }
 
+    @JsonIgnore
     public User getCreatedBy()
     {
         return createdBy;
@@ -77,6 +81,7 @@ public class AbstractEntity<PK extends Serializable>
         this.createdBy = createdBy;
     }
 
+    @JsonIgnore
     public DateTime getCreatedDate()
     {
         return null == createdDate ? null : new DateTime( createdDate );
@@ -87,6 +92,7 @@ public class AbstractEntity<PK extends Serializable>
         this.createdDate = null == createdDate ? null : createdDate.toDate();
     }
 
+    @JsonIgnore
     public User getLastModifiedBy()
     {
         return lastModifiedBy;
@@ -97,6 +103,7 @@ public class AbstractEntity<PK extends Serializable>
         this.lastModifiedBy = lastModifiedBy;
     }
 
+    @JsonIgnore
     public DateTime getLastModifiedDate()
     {
         return null == lastModifiedDate ? null : new DateTime( lastModifiedDate );
@@ -106,7 +113,8 @@ public class AbstractEntity<PK extends Serializable>
     {
         this.lastModifiedDate = null == lastModifiedDate ? null : lastModifiedDate.toDate();
     }
-    
+
+    @JsonIgnore
     public Integer getVersion()
     {
         return version;
@@ -117,6 +125,7 @@ public class AbstractEntity<PK extends Serializable>
         this.version = version;
     }
 
+    @JsonIgnore
     public boolean isNew()
     {
         return null == getId();

@@ -21,18 +21,9 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 
 import net.dynamichorizons.rp.domain.base.AbstractEntity;
 
-@XmlRootElement( name = "menu_item_image" )
-@XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "MenuItemImage" )
 @Entity
 @Table( name = "TBL_MENU_ITEM_IMAGE" )
 @AttributeOverride( name = "id", column = @Column( name = "MENU_ITEM_IMAGE_ID" ) )
@@ -42,23 +33,18 @@ public class MenuItemImage
 
     private static final long serialVersionUID = 9089663846396980114L;
 
-    @XmlTransient
     @Column( name = "MENU_GROUP_ITEM_ID" )
     protected Long menuGroupItemId;
 
-    @XmlAttribute( name = "width" )
     @Column( name = "MENU_ITEM_IMAGE_WIDTH", nullable = true )
     protected String width;
 
-    @XmlAttribute( name = "height" )
     @Column( name = "MENU_ITEM_IMAGE_HEIGHT", nullable = true )
     protected String height;
 
-    @XmlAttribute( name = "type" )
     @Column( name = "MENU_ITEM_IMAGE_TYPE", nullable = false )
     protected String type;
 
-    @XmlAttribute( name = "media" )
     @Column( name = "MENU_ITEM_IMAGE_MEDIA", nullable = false )
     protected String media;
 

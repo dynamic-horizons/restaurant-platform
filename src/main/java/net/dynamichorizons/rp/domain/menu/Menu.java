@@ -28,14 +28,6 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 
 import net.dynamichorizons.rp.domain.base.AbstractEntity;
 
@@ -43,50 +35,38 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-@XmlRootElement( name = "menu" )
-@XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "Menu", propOrder = { "menuDescription", "menuNote", "menuDuration", "menuGroups" } )
 @Entity
 @Table( name = "TBL_MENU" )
-@AttributeOverride( name = "id", column = @Column( name = "MENU_ITEM_SIZE_ID" ) )
+@AttributeOverride( name = "id", column = @Column( name = "MENU_ID" ) )
 public class Menu
     extends AbstractEntity<Long>
 {
 
     private static final long serialVersionUID = 7126859430093600619L;
 
-    @XmlAttribute( name = "name", required = true )
     @Column( name = "MENU_NAME", nullable = false, length = 50 )
     protected String name;
 
-    @XmlTransient
     @Column( name = "MENU_KEY", nullable = false, length = 50 )
     protected String menuKey;
 
-    @XmlElement( name = "menu_description" )
     @Column( name = "MENU_DESC", nullable = true, length = 255 )
     protected String menuDescription;
 
-    @XmlElement( name = "menu_note" )
     @Column( name = "MENU_NOTE", nullable = true, length = 255 )
     protected String menuNote;
 
-    @XmlAttribute( name = "currency_symbol", required = true )
     @Column( name = "MENU_CURRENCY_SYMBOL", nullable = false, length = 3 )
     protected String currencySymbol;
 
-    @XmlAttribute( name = "language" )
     @Column( name = "MENU_LANGUAGE", nullable = true, length = 2 )
     protected String language;
 
-    @XmlElement( name = "menu_duration", required = true )
     @Embedded
     protected MenuDuration menuDuration;
-
-    @XmlElementWrapper( name = "menu_groups", required = true )
-    @XmlElement( name = "menu_group" )
-    @OrderBy( "orderBy ASC" )
+    
     @OneToMany( mappedBy = "parentMenu", fetch = FetchType.EAGER )
+    @OrderBy( "orderBy ASC" )
     @Fetch( value = FetchMode.SELECT )
     protected List<MenuGroup> menuGroups;
 

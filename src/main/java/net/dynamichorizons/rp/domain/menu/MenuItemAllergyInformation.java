@@ -19,23 +19,14 @@ package net.dynamichorizons.rp.domain.menu;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
 
-@XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "", propOrder = { "value" } )
 @Embeddable
 public class MenuItemAllergyInformation
 {
 
-    @XmlValue
     @Column( name = "MENU_ITEM_ALLERGY_INFORMATION", nullable = true, length = 450 )
     protected String value;
 
-    @XmlAttribute( name = "allergens" )
     @Column( name = "MENU_ITEM_ALLERGENS", nullable = true, length = 255 )
     protected String allergens;
 

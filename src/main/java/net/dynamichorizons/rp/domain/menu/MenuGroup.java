@@ -29,67 +29,47 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 
 import net.dynamichorizons.rp.domain.base.AbstractEntity;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-@XmlRootElement( name = "menu_group" )
-@XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "MenuGroup", propOrder = { "menuGroupDescription", "menuGroupNote", "menuItems", "menuGroupOptions" } )
 @Entity
 @Table( name = "TBL_MENU_GROUP" )
-@AttributeOverride( name = "id", column = @Column( name = "MENU_GROUP_UID" ) )
+@AttributeOverride( name = "id", column = @Column( name = "MENU_GROUP_ID" ) )
 public class MenuGroup
-extends AbstractEntity<Long>
+    extends AbstractEntity<Long>
 {
 
     private static final long serialVersionUID = -229485181478103996L;
 
-    @XmlTransient
     @ManyToOne
     @JoinColumn( name = "MENU_ID" )
     protected Menu parentMenu;
 
-    @XmlAttribute( name = "group_name", required = true )
     @Column( name = "MENU_GROUP_NAME", nullable = false, length = 50 )
     protected String name;
 
-    @XmlElement( name = "group_description" )
     @Column( name = "MENU_GROUP_DESC", nullable = true, length = 255 )
     protected String menuGroupDescription;
 
-    @XmlElement( name = "group_note" )
     @Column( name = "MENU_GROUP_NOTE", nullable = true, length = 255 )
     protected String menuGroupNote;
 
-    @XmlAttribute( name = "disabled" )
     @Column( name = "IS_DISABLED", nullable = true )
     protected Boolean disabled;
-    
-    @XmlTransient                
-    @Column( name="ORDER_BY")
+
+    @Column( name = "ORDER_BY" )
     protected Integer orderBy;
 
-    @XmlElementWrapper(name = "menu_items", required = true)
-    @XmlElement( name = "menu_item", required = true )
     @Transient
     protected List<MenuItem> menuItems;
 
-    @XmlElementWrapper(name = "menu_group_options", required = true)
-    @XmlElement( name = "menu_group_options" )
     @OneToMany( fetch = FetchType.EAGER )
-    @JoinColumn( name = "MENU_GROUP_UID" )
+    @JoinColumn( name = "MENU_GROUP_ID" )
     @Fetch( value = FetchMode.SELECT )
     protected List<MenuGroupOption> menuGroupOptions;
 
@@ -97,6 +77,7 @@ extends AbstractEntity<Long>
     {
     }
 
+    @JsonIgnore
     public Menu getParentMenu()
     {
         return parentMenu;
@@ -188,6 +169,6 @@ extends AbstractEntity<Long>
     public String toString()
     {
         return new ToStringBuilder( this ).append( "id", getId() ).append( "name", name ).append( "menuItems",
-                                                                                               getMenuItems() ).toString();
+                                                                                                  getMenuItems() ).toString();
     }
 }

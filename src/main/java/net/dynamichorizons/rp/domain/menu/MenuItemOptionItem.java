@@ -23,18 +23,11 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import net.dynamichorizons.rp.domain.base.AbstractEntity;
 
-@XmlRootElement( name = "menu_item_option_item" )
-@XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "MenuItemOptionItem", propOrder = { "menuItemOptionName", "menItemOptionAdditionalCost" } )
 @Entity
 @Table( name = "TBL_MENU_ITEM_OPTION_ITEM" )
 @AttributeOverride( name = "id", column = @Column( name = "MENU_ITEM_OPTION_ITEM_ID" ) )
@@ -44,23 +37,21 @@ public class MenuItemOptionItem
 
     private static final long serialVersionUID = 4966934936618204569L;
 
-    @XmlTransient
     @ManyToOne
     @JoinColumn( name = "MENU_ITEM_OPTION_ID" )
     protected MenuItemOption parentMenuItemOption;
 
-    @XmlElement( name = "menu_item_option_name", required = true )
-    @Column( name = "MENU_ITEM_OPTION_NAME" )
+    @Column( name = "MENU_ITEM_OPTION_ITEM_NAME" )
     protected String menuItemOptionName;
 
-    @XmlElement( name = "menu_item_option_additional_cost" )
-    @Column( name = "MENU_ITEM_OPTION_ADDITIONAL_COST" )
+    @Column( name = "MENU_ITEM_OPTION_ITEM_ADDL_COST" )
     protected Double menItemOptionAdditionalCost;
 
     public MenuItemOptionItem()
     {
     }
 
+    @JsonIgnore
     public MenuItemOption getParentMenuItemOption()
     {
         return parentMenuItemOption;

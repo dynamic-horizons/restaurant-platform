@@ -25,21 +25,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Version;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 
 import net.dynamichorizons.rp.domain.base.AbstractEntity;
 
-@XmlRootElement( name = "menu_group_option" )
-@XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "MenuGroupOption", propOrder = { "menuGroupOptionInformation", "menuGroupOptionItems" } )
 @Entity
 @AttributeOverride( name = "id", column = @Column( name = "MENU_GROUP_OPTION_ID" ) )
 @Table( name = "TBL_MENU_GROUP_OPTION" )
@@ -49,29 +37,18 @@ public class MenuGroupOption
 
     private static final long serialVersionUID = 3543542167300762228L;
 
-    @XmlTransient
-    @Version
-    @Column( name = "OPTLOCK" )
-    protected Integer version;
-
-    @XmlAttribute( name = "name", required = true )
     @Column( name = "MENU_GROUP_OPTION_NAME", nullable = true, length = 50 )
     protected String name;
 
-    @XmlElement( name = "menu_group_option_information", required = true )
     @Column( name = "MENU_GROUP_OPTION_INFO", nullable = true, length = 255 )
     protected String menuGroupOptionInformation;
 
-    @XmlAttribute( name = "min_selected" )
     @Column( name = "MENU_GROUP_OPTION_MIN_SELECTED", nullable = true )
     protected Integer minSelected;
 
-    @XmlAttribute( name = "max_selected" )
     @Column( name = "MENU_GROUP_OPTION_MAX_SELECTED", nullable = true )
     protected Integer maxSelected;
 
-    @XmlElementWrapper( name = "menu_item_option_items", required = true )
-    @XmlElement( name = "menu_item_option_item" )
     @OneToMany( mappedBy = "parentMenuGroupOption" )
     protected List<MenuGroupOptionItem> menuGroupOptionItems;
 

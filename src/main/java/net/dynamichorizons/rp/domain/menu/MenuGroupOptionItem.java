@@ -23,19 +23,11 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Version;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import net.dynamichorizons.rp.domain.base.AbstractEntity;
 
-@XmlRootElement( name = "menu_group_option_item" )
-@XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "MenuGroupOptionItem", propOrder = { "menuGroupOptionName", "menuGroupOptionAdditionalCost" } )
 @Entity
 @AttributeOverride( name = "id", column = @Column( name = "MENU_GROUP_OPTION_ITEM_ID" ) )
 @Table( name = "TBL_MENU_GROUP_OPTION_ITEM" )
@@ -45,21 +37,13 @@ public class MenuGroupOptionItem
 
     private static final long serialVersionUID = -439513214245314030L;
 
-    @XmlTransient
-    @Version
-    @Column( name = "OPTLOCK" )
-    protected Integer version;
-
-    @XmlTransient
     @ManyToOne
-    @JoinColumn( name = "MENU_GROUP_OPTION_UID" )
+    @JoinColumn( name = "MENU_GROUP_OPTION_ID" )
     protected MenuGroupOption parentMenuGroupOption;
 
-    @XmlElement( name = "menu_group_option_name", required = true )
     @Column( name = "MENU_GROUP_OPTION_ITEM_NAME" )
     protected String menuGroupOptionName;
 
-    @XmlElement( name = "menu_group_option_additional_cost" )
     @Column( name = "MENU_GROUP_OPTION_ITEM_ADDL_COST" )
     protected Double menuGroupOptionAdditionalCost;
 
@@ -67,6 +51,7 @@ public class MenuGroupOptionItem
     {
     }
 
+    @JsonIgnore
     public MenuGroupOption getParentMenuGroupOption()
     {
         return parentMenuGroupOption;
