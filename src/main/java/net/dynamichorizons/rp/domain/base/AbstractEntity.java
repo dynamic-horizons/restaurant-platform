@@ -31,33 +31,32 @@ public class AbstractEntity<PK extends Serializable>
     private static final long serialVersionUID = 1743597881995402609L;
 
     @Id
-    // @XmlAttribute( name = "id" )
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private PK id;
 
-    // @XmlTransient
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn( name = "CREATE_USER_ID" )
+    @ManyToOne( fetch = FetchType.LAZY )
+    @JoinColumn( name = "CREATE_USER_ID", referencedColumnName = "USER_ID", nullable = false )
+    @JsonIgnore
     private User createdBy;
 
-    // @XmlTransient
     @Temporal( TemporalType.TIMESTAMP )
-    @Column( name = "CREATE_DATE", nullable = true )
+    @Column( name = "CREATE_DATE" )
+    @JsonIgnore
     private Date createdDate;
 
-    // @XmlTransient
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn( name = "MODIFY_USER_ID" )
+    @ManyToOne( fetch = FetchType.LAZY )
+    @JoinColumn( name = "MODIFY_USER_ID", referencedColumnName = "USER_ID", nullable = true )
+    @JsonIgnore
     private User lastModifiedBy;
 
-    // @XmlTransient
     @Temporal( TemporalType.TIMESTAMP )
     @Column( name = "MODIFY_DATE", nullable = true )
+    @JsonIgnore
     private Date lastModifiedDate;
 
-    // @XmlTransient
     @Version
     @Column( name = "OPTLOCK" )
+    @JsonIgnore
     protected Integer version;
 
     public PK getId()

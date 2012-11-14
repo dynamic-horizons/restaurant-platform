@@ -17,30 +17,18 @@
  */
 package net.dynamichorizons.rp.rest.service;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import net.dynamichorizons.rp.domain.Customer;
+import net.dynamichorizons.rp.domain.LoginToken;
+import net.dynamichorizons.rp.domain.exceptions.LoginException;
 
-import net.dynamichorizons.rp.stereotype.WebService;
-
-@WebService
-@Path( "/" )
-public class RestaurantWebService
+public interface RestaurantWebService
 {
-    @GET
-    @Produces( MediaType.TEXT_PLAIN )
-    public String defaultService()
-    {
-        return "Restaurant Platform REST Service";
-    }
+    public String defaultService();
 
-    @GET
-    @Path( "/build" )
-    @Produces( MediaType.TEXT_PLAIN )
-    public String buildInformation()
-    {
-        return "Restaurant Platform - V1.0";
-    }
+    public String buildInformation();
+    
+    public Customer login( LoginToken loginToken )
+                    throws LoginException;
 
+    public String logout();
 }

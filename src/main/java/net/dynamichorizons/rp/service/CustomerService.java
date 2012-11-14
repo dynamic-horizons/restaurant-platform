@@ -1,26 +1,17 @@
 package net.dynamichorizons.rp.service;
 
 import net.dynamichorizons.rp.domain.Customer;
-import net.dynamichorizons.rp.store.CustomerRepository;
+import net.dynamichorizons.rp.domain.exceptions.DatabaseException;
+import net.dynamichorizons.rp.domain.exceptions.LoginException;
+import net.dynamichorizons.rp.domain.exceptions.UserExistsException;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-@Service
-public class CustomerService
+public interface CustomerService
 {
-
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private UserService userService;
-
+    public Customer getCustomer();
+    
     public Customer createCustomer( Customer customer )
-    {
-        userService.createUser( customer.getUser() );
-        customerRepository.save( customer );
+        throws UserExistsException, LoginException, DatabaseException;
 
-        return customer;
-    }
+    public Customer login( String username, String password, boolean rememberMe )
+        throws LoginException;
 }

@@ -42,6 +42,7 @@ dependencies {
 
 	compile (	
 	    "org.hibernate:hibernate-entitymanager:$versionHibernate",
+	    "org.hibernate:hibernate-validator:4.3.0.Final",
 	    "org.springframework:spring-core:$versionSpring",
 	    "org.springframework:spring-context:$versionSpring",
 	    "org.springframework:spring-orm:$versionSpring",
@@ -71,6 +72,7 @@ dependencies {
 	    'com.fasterxml.jackson.datatype:jackson-datatype-hibernate4:2.0.5',
 	    'org.apache.shiro:shiro-core:1.2.1',
 	    'org.apache.shiro:shiro-spring:1.2.1',
+	    'javax.validation:validation-api:1.0.0.GA',
     )
     
     testCompile (

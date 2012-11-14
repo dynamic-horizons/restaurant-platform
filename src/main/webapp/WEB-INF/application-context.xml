@@ -18,9 +18,7 @@
 	<context:component-scan base-package="net.dynamichorizons.rp.rest.service" />
 	<context:component-scan base-package="net.dynamichorizons.rp.service" />
 
-	<bean id="auditorAware" class="net.dynamichorizons.rp.audit.DefaultAuditorAwareImpl" />
-
-	<jpa:auditing auditor-aware-ref="auditorAware" />
+	<jpa:auditing auditor-aware-ref="userServiceImpl" />
 	<jpa:repositories base-package="net.dynamichorizons.rp.store" />
 
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
@@ -37,11 +35,12 @@
 			/> -->
 	</aop:config>
 
-	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/RestaurantPlatformDB" />
+	<jee:jndi-lookup id="targetDataSource" jndi-name="jdbc/RestaurantPlatformDB" />
 
 	<!-- Uncomment for JDBC DS Logging -->
-	<!-- <bean id="dataSource" class="org.jdbcdslog.ConnectionPoolDataSourceProxy"> 
-		<property name="targetDSDirect" ref="targetDataSource" /> </bean> -->
+	<bean id="dataSource" class="org.jdbcdslog.ConnectionPoolDataSourceProxy">
+		<property name="targetDSDirect" ref="targetDataSource" />
+	</bean>
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
@@ -54,6 +53,29 @@
 			<bean
 				class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
 		</property>
+	</bean>
+
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+	
+	<bean id="rpRealm" class="net.dynamichorizons.rp.auth.RestaurantPlatformRealmImpl"
+		depends-on="userRepository" />
+
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="rpRealm" />
+	</bean>
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		depends-on="lifecycleBeanPostProcessor" />
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
 	</bean>
 
 </beans>

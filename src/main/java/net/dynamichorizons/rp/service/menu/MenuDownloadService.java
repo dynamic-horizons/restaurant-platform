@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package net.dynamichorizons.rp.service;
+package net.dynamichorizons.rp.service.menu;
 
 import java.io.File;
 import java.io.IOException;

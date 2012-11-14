@@ -32,8 +32,8 @@ import javax.ws.rs.core.StreamingOutput;
 
 import net.dynamichorizons.rp.domain.exceptions.ContentNotFoundException;
 import net.dynamichorizons.rp.domain.menu.Menu;
-import net.dynamichorizons.rp.service.MenuDownloadService;
-import net.dynamichorizons.rp.service.MenuService;
+import net.dynamichorizons.rp.service.menu.MenuDownloadService;
+import net.dynamichorizons.rp.service.menu.MenuService;
 import net.dynamichorizons.rp.stereotype.WebService;
 
 import org.slf4j.Logger;

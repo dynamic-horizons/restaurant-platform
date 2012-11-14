@@ -15,8 +15,10 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public class RestaurantPlatformRealm extends AuthorizingRealm
+@Component
+public class RestaurantPlatformRealmImpl extends AuthorizingRealm implements RestaurantPlatformRealm
 {
     @Autowired
     private UserRepository userRepository;
@@ -44,7 +46,7 @@ public class RestaurantPlatformRealm extends AuthorizingRealm
             throw new AccountException("Invalid username.");
         }
         
-        ByteSource salt = Sha512Hash.fromBase64String( user.getPassword() ).getSalt();
+        ByteSource salt = Sha512Hash.fromBase64String( user.getDbPassword() ).getSalt();
         
         SimpleAuthenticationInfo simpleAuthInfo = new SimpleAuthenticationInfo(username, upToken.getCredentials(), getName());
         simpleAuthInfo.setCredentialsSalt( salt );

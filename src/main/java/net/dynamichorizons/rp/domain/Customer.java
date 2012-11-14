@@ -6,13 +6,18 @@ import java.util.List;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 
 import net.dynamichorizons.rp.domain.base.AbstractEntity;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table( name = "TBL_CUSTOMER" )
@@ -22,21 +27,23 @@ public class Customer
 {
 
     private static final long serialVersionUID = 6390858948389187515L;
-    
-    @ManyToMany
-    @JoinTable(name = "TBL_CUSTOMER_ADDRESS", 
-        joinColumns = { @JoinColumn(name = "CUSTOMER_ID") }, 
-        inverseJoinColumns = { @JoinColumn(name = "ADDRESS_ID") })
+
+    @ManyToMany( fetch = FetchType.EAGER )
+    @JoinTable( name = "TBL_CUSTOMER_ADDRESS", joinColumns = { @JoinColumn( name = "CUSTOMER_ID" ) }, inverseJoinColumns = { @JoinColumn( name = "ADDRESS_ID" ) } )
+    @Fetch( FetchMode.SELECT )
+    @Valid
     private List<Address> addresses;
-    
-    @ManyToMany
-    @JoinTable(name = "TBL_CUSTOMER_PHONE", 
-        joinColumns = { @JoinColumn(name = "CUSTOMER_ID") }, 
-        inverseJoinColumns = { @JoinColumn(name = "ADDRESS_ID") })
+
+    @ManyToMany( fetch = FetchType.EAGER )
+    @JoinTable( name = "TBL_CUSTOMER_PHONE", joinColumns = { @JoinColumn( name = "CUSTOMER_ID" ) }, inverseJoinColumns = { @JoinColumn( name = "PHONE_ID" ) } )
+    @Fetch( FetchMode.SELECT )
+    @Valid
     private List<PhoneNumber> phoneNumbers;
 
-    @ManyToOne
+    @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "USER_ID" )
+    @Fetch( FetchMode.JOIN )
+    @Valid
     private User user;
 
     public List<Address> getAddresses()
