@@ -3,3 +3,4 @@
 /.gradle
 /restaurant-platform-domain/bin
 /restaurant-platform-order-printing/bin
+/restaurant-platform-webapp/build
