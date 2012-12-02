@@ -1,0 +1,52 @@
+defaultTasks 'build'
+
+apply plugin: 'war'
+
+dependencies {
+
+	compile project(':restaurant-platform-domain')
+
+	compile (	
+	    "org.hibernate:hibernate-entitymanager:$versionHibernate",
+	    "org.hibernate:hibernate-validator:4.3.0.Final",
+	    "org.springframework:spring-core:$versionSpring",
+	    "org.springframework:spring-context:$versionSpring",
+	    "org.springframework:spring-orm:$versionSpring",
+	    "org.springframework:spring-web:$versionSpring",
+	    "org.springframework:spring-aop:$versionSpring",
+	    "org.springframework:spring-aspects:$versionSpring",
+	    "com.sun.jersey:jersey-core:$versionJersey",
+	    "com.sun.jersey:jersey-server:$versionJersey",
+	    "com.sun.jersey:jersey-servlet:$versionJersey",
+	    "com.sun.jersey:jersey-json:$versionJersey",
+	    "com.sun.jersey.contribs:jersey-spring:$versionJersey",
+	    "ch.qos.logback:logback-core:$versionLogback",
+	    "ch.qos.logback:logback-classic:$versionLogback",
+		"commons-io:commons-io:2.4",
+		'commons-collections:commons-collections:3.2.1',
+		'commons-lang:commons-lang:2.6',
+		'org.apache.xmlgraphics:fop:1.0',
+		'org.slf4j:slf4j-api:$versionSlf4j',
+	    "javax.xml.bind:jaxb-api:2.2.7",
+	    "com.sun.xml.bind:jaxb-impl:2.2.6",
+	    'com.googlecode.usc:jdbcdslog:1.0.6.2',
+	    'joda-time:joda-time:2.1',
+	    'org.jadira.usertype:usertype.core:3.0.0.CR3',
+	    'mysql:mysql-connector-java:5.1.21',
+	    'org.springframework.data:spring-data-jpa:1.1.1.RELEASE',
+	    'commons-dbcp:commons-dbcp:1.4',
+	    'com.fasterxml.jackson.datatype:jackson-datatype-hibernate4:2.0.5',
+	    'org.apache.shiro:shiro-core:1.2.1',
+	    'org.apache.shiro:shiro-spring:1.2.1',
+	    'javax.validation:validation-api:1.0.0.GA',
+    )
+    
+    testCompile (
+          'junit:junit:4.10',
+          "org.springframework:spring-test:$versionSpring",
+          'com.sun.jersey:jersey-client:1.13'
+    )
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_6
+targetCompatibility = JavaVersion.VERSION_1_6
