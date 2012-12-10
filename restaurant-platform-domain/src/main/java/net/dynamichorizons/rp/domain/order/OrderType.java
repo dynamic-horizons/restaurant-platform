@@ -3,26 +3,29 @@ package net.dynamichorizons.rp.domain.order;
 public enum OrderType
 {
     PICKUP( "pickup" ), DELIVERY( "delivery" ), COURIER( "courier" );
-    
-    private String orderKey;
 
-    private OrderType( String orderKey )
+    private String orderTypeKey;
+
+    private OrderType( String orderTypeKey )
     {
-        this.orderKey = orderKey;
+        this.orderTypeKey = orderTypeKey;
     }
 
-    public String getOrderKey()
+    public String getOrderTypeKey()
     {
-        return orderKey;
+        return orderTypeKey;
     }
-    
-    public static OrderType fromOrderKey(String orderKey) {
-        for(OrderType orderType : OrderType.values()) {
-            if(orderType.getOrderKey().equals( orderKey )) {
+
+    public static OrderType fromOrderTypeKey( String orderTypeKey )
+    {
+        for ( OrderType orderType : OrderType.values() )
+        {
+            if ( orderType.getOrderTypeKey().equalsIgnoreCase( orderTypeKey ) )
+            {
                 return orderType;
             }
         }
-        
+
         return null;
     }
 }

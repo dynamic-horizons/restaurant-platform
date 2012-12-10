@@ -17,17 +17,20 @@ public class CustomerAddress
 {
 
     private static final long serialVersionUID = -6434211273980658825L;
-    
+
     @OneToOne
-    @JoinColumn(name = "CUSTOMER_ID")
+    @JoinColumn( name = "CUSTOMER_ID" )
     private Customer customer;
-    
+
     @OneToOne
-    @JoinColumn(name = "ADDRESS_ID")
+    @JoinColumn( name = "ADDRESS_ID" )
     private Address address;
-    
-    @Column( name = "DEFAULT_ADDRESS", nullable = false)
+
+    @Column( name = "DEFAULT_ADDRESS", nullable = false )
     private Boolean defaultAddress;
+
+    @Column( name = "ACTIVE", nullable = false )
+    private Boolean active;
 
     public Customer getCustomer()
     {
@@ -58,5 +61,14 @@ public class CustomerAddress
     {
         this.defaultAddress = defaultAddress;
     }
-    
+
+    public Boolean isActive()
+    {
+        return active;
+    }
+
+    public void setActive( Boolean active )
+    {
+        this.active = active;
+    }
 }

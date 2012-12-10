@@ -6,7 +6,6 @@ subprojects {
     }
 
 	dependencies {
-	
 		testCompile (
 			'junit:junit:4.10',
 	    )
@@ -15,6 +14,6 @@ subprojects {
     version = '1.0'
 
     jar {
-        manifest.attributes provider: 'my cool company'
+        manifest.attributes provider: 'Dynamic Horizons, LLC'
     }
 }

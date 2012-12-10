@@ -11,23 +11,26 @@ import net.dynamichorizons.rp.domain.base.AbstractEntity;
 
 @Entity
 @Table( name = "TBL_CUSTOMER_PHONE" )
-@AttributeOverride( name = "id", column = @Column( name = "PHONE_ID" ) )
+@AttributeOverride( name = "id", column = @Column( name = "CUSTOMER_PHONE_ID" ) )
 public class CustomerPhoneNumber
     extends AbstractEntity<Long>
 {
 
     private static final long serialVersionUID = -1010344212368422087L;
-    
+
     @OneToOne
-    @JoinColumn(name = "CUSTOMER_ID")
+    @JoinColumn( name = "CUSTOMER_ID" )
     private Customer customer;
-    
+
     @OneToOne
-    @JoinColumn(name = "PHONE_ID")
+    @JoinColumn( name = "PHONE_ID" )
     private PhoneNumber phoneNumber;
 
     @Column( name = "DEFAULT_PHONE", nullable = false )
     private Boolean defaultPhoneNumber;
+
+    @Column( name = "ACTIVE", nullable = false )
+    private Boolean active;
 
     public Customer getCustomer()
     {
@@ -47,7 +50,7 @@ public class CustomerPhoneNumber
     public void setPhoneNumber( PhoneNumber phoneNumber )
     {
         this.phoneNumber = phoneNumber;
-    }                                                                               
+    }
 
     public Boolean isDefaultPhoneNumber()
     {
@@ -57,5 +60,15 @@ public class CustomerPhoneNumber
     public void setDefaultPhoneNumber( Boolean defaultPhoneNumber )
     {
         this.defaultPhoneNumber = defaultPhoneNumber;
+    }
+
+    public Boolean isActive()
+    {
+        return active;
+    }
+
+    public void setActive( Boolean active )
+    {
+        this.active = active;
     }
 }

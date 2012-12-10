@@ -3,6 +3,7 @@
 	<name>restaurant-platform-webapp</name>
 	<comment></comment>
 	<projects>
+		<project>restaurant-platform-domain</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

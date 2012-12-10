@@ -9,5 +9,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface AddressRepository
     extends PagingAndSortingRepository<Address, Long>
 {
-    public List<Address> findByCustomerId(Long customerId);
+    public List<Address> findByCustomerIdAndActive( Long customerId, Boolean active );
 }

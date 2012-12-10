@@ -14,7 +14,7 @@ import net.dynamichorizons.rp.domain.ValidationError;
 import net.dynamichorizons.rp.domain.customer.Customer;
 import net.dynamichorizons.rp.domain.exceptions.DatabaseException;
 import net.dynamichorizons.rp.domain.exceptions.InvalidDataException;
-import net.dynamichorizons.rp.domain.exceptions.LoginException;
+import net.dynamichorizons.rp.domain.exceptions.ServerErrorException;
 import net.dynamichorizons.rp.domain.exceptions.UserExistsException;
 import net.dynamichorizons.rp.service.customer.CustomerService;
 import net.dynamichorizons.rp.stereotype.WebService;
@@ -33,12 +33,14 @@ public class CustomerWebServiceImpl
     @Autowired
     private Validator validator;
 
+    @Override
     @GET
     public Customer getCustomer()
     {
         return customerService.getCustomer();
     }
 
+    @Override
     @POST
     @Path( "/register" )
     public Customer registerCustomer( Customer customer )
@@ -59,15 +61,9 @@ public class CustomerWebServiceImpl
         {
             throw new InvalidDataException();
         }
-        catch ( LoginException e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
         catch ( DatabaseException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new ServerErrorException();
         }
 
         if ( result != null )

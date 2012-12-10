@@ -1,10 +1,13 @@
 package net.dynamichorizons.rp.service;
 
+import javax.annotation.PreDestroy;
+
 import net.dynamichorizons.rp.audit.DefaultAuditorAware;
 import net.dynamichorizons.rp.domain.User;
 import net.dynamichorizons.rp.domain.exceptions.DatabaseException;
 import net.dynamichorizons.rp.domain.exceptions.LoginException;
 import net.dynamichorizons.rp.domain.exceptions.UserExistsException;
+import net.dynamichorizons.rp.service.order.OrderService;
 import net.dynamichorizons.rp.store.UserRepository;
 
 import org.apache.shiro.SecurityUtils;
@@ -15,17 +18,23 @@ import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.Sha512Hash;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 @Service
 @Scope( value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.INTERFACES )
+@Transactional( readOnly = true )
 public class UserServiceImpl
     implements UserService, DefaultAuditorAware
 {
+    private static final Logger LOG = LoggerFactory.getLogger( UserServiceImpl.class );
+
     private static final int HASH_ITERATIONS = 20480;
 
     private static final String SYSTEM_USER = "SYSTEM";
@@ -35,24 +44,33 @@ public class UserServiceImpl
     private User defaultSystemUser;
 
     @Autowired
+    private OrderService orderService;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Override
     public User getUser()
     {
-        if(currentUser != null &&  SecurityUtils.getSubject().isAuthenticated()) {
+        if ( currentUser != null && SecurityUtils.getSubject().isAuthenticated() )
+        {
             return currentUser;
-        } else if(currentUser != null) {
+        }
+        else if ( currentUser != null )
+        {
             currentUser = null;
         }
-        
+
         return null;
     }
 
     @Override
+    @Transactional
     public User login( String username, String password, boolean rememberMe )
         throws LoginException
     {
+        LOG.info( String.format( "Logging User {0} in to the application.", username ) );
+
         Subject currentUserSubject = SecurityUtils.getSubject();
 
         if ( !currentUserSubject.isAuthenticated() )
@@ -76,14 +94,18 @@ public class UserServiceImpl
     }
 
     @Override
+    @Transactional
     public void logout()
     {
+        orderService.cancelCurrentOrder();
+
         Subject currentUserSubject = SecurityUtils.getSubject();
-        if ( currentUserSubject.isAuthenticated() )
+        if ( currentUserSubject != null && currentUserSubject.isAuthenticated() )
         {
             currentUserSubject.logout();
-            currentUser = null;
         }
+
+        currentUser = null;
     }
 
     @Override
@@ -102,6 +124,7 @@ public class UserServiceImpl
     }
 
     @Override
+    @Transactional
     public User createUser( User user )
         throws UserExistsException, DatabaseException
     {
@@ -151,4 +174,12 @@ public class UserServiceImpl
         RandomNumberGenerator rng = new SecureRandomNumberGenerator();
         return rng.nextBytes();
     }
+
+    @PreDestroy
+    private void cleanup()
+    {
+        LOG.info( "Destroy::UserServiceImpl" );
+        logout();
+    }
+
 }

@@ -18,13 +18,13 @@
 <application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.zeroturnaround.com" xsi:schemaLocation="http://www.zeroturnaround.com http://www.zeroturnaround.com/alderaan/rebel-2_0.xsd">
 
 	<classpath>
-		<dir name="C:/Development/workspace/restaurant-platform/build/classes">
+		<dir name="C:/Development/workspace/restaurant-platform/restaurant-platform-webapp/build/classes">
 		</dir>
 	</classpath>
 
 	<web>
 		<link target="/">
-			<dir name="C:/Development/workspace/restaurant-platform/src/main/webapp">
+			<dir name="C:/Development/workspace/restaurant-platform/restaurant-platform-webapp/src/main/webapp">
 			</dir>
 		</link>
 	</web>

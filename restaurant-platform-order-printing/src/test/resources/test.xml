@@ -1,0 +1,255 @@
+<Order xmlns="">
+	<id />
+	<customer>
+		<id />
+		<addresses></addresses>
+		<phoneNumbers></phoneNumbers>
+		<user>
+			<id />
+			<emailAddress>nate@natesteffan.com</emailAddress>
+			<password />
+			<firstName>Nate</firstName>
+			<lastName>Steffan</lastName>
+			<active>false</active>
+		</user>
+	</customer>
+	<orderType>COURIER</orderType>
+	<orderStatus>COMPLETED</orderStatus>
+	<billingAddress>
+		<id />
+		<address1>16917 Gannon Way W</address1>
+		<address2 />
+		<city>Rosemount</city>
+		<state>MN</state>
+		<zipCode>55068</zipCode>
+		<defaultAddress />
+		<active />
+	</billingAddress>
+	<deliveryAddress>
+		<id />
+		<address1>16917 Gannon Way W</address1>
+		<address2 />
+		<city>Rosemount</city>
+		<state>MN</state>
+		<zipCode>55068</zipCode>
+		<defaultAddress />
+		<active />
+	</deliveryAddress>
+	<customerPhoneNumber>
+		<id />
+		<phoneNumber>952-994-5399</phoneNumber>
+		<phoneExt />
+		<phoneDescription />
+		<defaultPhoneNumber />
+		<active />
+	</customerPhoneNumber>
+	<orderDate>1354975729311</orderDate>
+	<deliveryCharge>15.0</deliveryCharge>
+	<salesTax>13.35745</salesTax>
+	<orderSubTotal>156.8</orderSubTotal>
+	<orderTotal>185.15745</orderTotal>
+	<orderMenuSelections>
+		<orderMenuSelections>
+			<id />
+			<selectedMenuItem>
+				<id />
+				<menuGroupItemId />
+				<menuGroupId />
+				<menuItemName>Test 1</menuItemName>
+				<menuItemDescription />
+				<menuItemPrice>10.54</menuItemPrice>
+				<menuItemAllergyInformation />
+				<menuItemCalories />
+				<menuItemHeatIndex />
+				<disabled />
+				<special />
+				<vegetarian />
+				<vegan />
+				<kosher />
+				<halal />
+				<glutenFree />
+				<menuItemImageUrls></menuItemImageUrls>
+				<menuItemSizes></menuItemSizes>
+				<menuItemOptions></menuItemOptions>
+				<menuItemTags></menuItemTags>
+			</selectedMenuItem>
+			<selectedMenuItemSize />
+			<quantity>2</quantity>
+			<comments />
+			<price>10.54</price>
+			<total>21.08</total>
+		</orderMenuSelections>
+		<orderMenuSelections>
+			<id />
+			<selectedMenuItem>
+				<id />
+				<menuGroupItemId />
+				<menuGroupId />
+				<menuItemName>Test 2</menuItemName>
+				<menuItemDescription />
+				<menuItemPrice />
+				<menuItemAllergyInformation />
+				<menuItemCalories />
+				<menuItemHeatIndex />
+				<disabled />
+				<special />
+				<vegetarian />
+				<vegan />
+				<kosher />
+				<halal />
+				<glutenFree />
+				<menuItemImageUrls></menuItemImageUrls>
+				<menuItemSizes></menuItemSizes>
+				<menuItemOptions></menuItemOptions>
+				<menuItemTags></menuItemTags>
+			</selectedMenuItem>
+			<selectedMenuItemSize>
+				<id />
+				<menuGroupItemId />
+				<menuItemSizeName>TEST TEST</menuItemSizeName>
+				<menuItemSizeDescription />
+				<menuItemSizeCalories />
+				<menuItemSizePrice />
+			</selectedMenuItemSize>
+			<quantity>2</quantity>
+			<comments />
+			<price>8.54</price>
+			<total>17.08</total>
+		</orderMenuSelections>
+		<orderMenuSelections>
+			<id />
+			<selectedMenuItem>
+				<id />
+				<menuGroupItemId />
+				<menuGroupId />
+				<menuItemName>Test 3</menuItemName>
+				<menuItemDescription />
+				<menuItemPrice>6.54</menuItemPrice>
+				<menuItemAllergyInformation />
+				<menuItemCalories />
+				<menuItemHeatIndex />
+				<disabled />
+				<special />
+				<vegetarian />
+				<vegan />
+				<kosher />
+				<halal />
+				<glutenFree />
+				<menuItemImageUrls></menuItemImageUrls>
+				<menuItemSizes></menuItemSizes>
+				<menuItemOptions></menuItemOptions>
+				<menuItemTags></menuItemTags>
+			</selectedMenuItem>
+			<selectedMenuItemSize />
+			<quantity>5</quantity>
+			<comments />
+			<price>6.54</price>
+			<total>32.7</total>
+		</orderMenuSelections>
+		<orderMenuSelections>
+			<id />
+			<selectedMenuItem>
+				<id />
+				<menuGroupItemId />
+				<menuGroupId />
+				<menuItemName>Test 4</menuItemName>
+				<menuItemDescription />
+				<menuItemPrice>5.54</menuItemPrice>
+				<menuItemAllergyInformation />
+				<menuItemCalories />
+				<menuItemHeatIndex />
+				<disabled />
+				<special />
+				<vegetarian />
+				<vegan />
+				<kosher />
+				<halal />
+				<glutenFree />
+				<menuItemImageUrls></menuItemImageUrls>
+				<menuItemSizes></menuItemSizes>
+				<menuItemOptions></menuItemOptions>
+				<menuItemTags></menuItemTags>
+			</selectedMenuItem>
+			<selectedMenuItemSize />
+			<quantity>3</quantity>
+			<comments />
+			<price>5.54</price>
+			<total>16.62</total>
+		</orderMenuSelections>
+		<orderMenuSelections>
+			<id />
+			<selectedMenuItem>
+				<id />
+				<menuGroupItemId />
+				<menuGroupId />
+				<menuItemName>Test 5</menuItemName>
+				<menuItemDescription />
+				<menuItemPrice />
+				<menuItemAllergyInformation />
+				<menuItemCalories />
+				<menuItemHeatIndex />
+				<disabled />
+				<special />
+				<vegetarian />
+				<vegan />
+				<kosher />
+				<halal />
+				<glutenFree />
+				<menuItemImageUrls></menuItemImageUrls>
+				<menuItemSizes></menuItemSizes>
+				<menuItemOptions></menuItemOptions>
+				<menuItemTags></menuItemTags>
+			</selectedMenuItem>
+			<selectedMenuItemSize>
+				<id />
+				<menuGroupItemId />
+				<menuItemSizeName>TEST TEST</menuItemSizeName>
+				<menuItemSizeDescription />
+				<menuItemSizeCalories />
+				<menuItemSizePrice />
+			</selectedMenuItemSize>
+			<quantity>5</quantity>
+			<comments />
+			<price>7.54</price>
+			<total>37.7</total>
+		</orderMenuSelections>
+		<orderMenuSelections>
+			<id />
+			<selectedMenuItem>
+				<id />
+				<menuGroupItemId />
+				<menuGroupId />
+				<menuItemName>Test 6</menuItemName>
+				<menuItemDescription />
+				<menuItemPrice />
+				<menuItemAllergyInformation />
+				<menuItemCalories />
+				<menuItemHeatIndex />
+				<disabled />
+				<special />
+				<vegetarian />
+				<vegan />
+				<kosher />
+				<halal />
+				<glutenFree />
+				<menuItemImageUrls></menuItemImageUrls>
+				<menuItemSizes></menuItemSizes>
+				<menuItemOptions></menuItemOptions>
+				<menuItemTags></menuItemTags>
+			</selectedMenuItem>
+			<selectedMenuItemSize>
+				<id />
+				<menuGroupItemId />
+				<menuItemSizeName>TEST TEST</menuItemSizeName>
+				<menuItemSizeDescription />
+				<menuItemSizeCalories />
+				<menuItemSizePrice />
+			</selectedMenuItemSize>
+			<quantity>3</quantity>
+			<comments />
+			<price>10.54</price>
+			<total>31.619999999999997</total>
+		</orderMenuSelections>
+	</orderMenuSelections>
+	<asapOrder>true</asapOrder>
+</Order>

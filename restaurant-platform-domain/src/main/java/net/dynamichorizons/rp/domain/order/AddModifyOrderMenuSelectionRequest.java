@@ -2,7 +2,7 @@ package net.dynamichorizons.rp.domain.order;
 
 import java.io.Serializable;
 
-public class AddOrderMenuSelectionRequest
+public class AddModifyOrderMenuSelectionRequest
     implements Serializable
 {
 

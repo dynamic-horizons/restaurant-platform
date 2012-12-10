@@ -12,13 +12,15 @@ public class CreateOrderRequest
 
     private String orderType;
 
-    private long phoneNumberKey;
+    private Long phoneNumberKey;
 
-    private long orderAddressKey;
+    private Long billingAddressKey;
 
-    private long deliveryAddressKey;
+    private Long deliveryAddressKey;
 
-    private DateTime deliveryDate;
+    private DateTime orderDate;
+
+    private Boolean isAsapOrder;
 
     public CreateOrderRequest()
     {
@@ -34,44 +36,53 @@ public class CreateOrderRequest
         this.orderType = orderType;
     }
 
-    public long getPhoneNumberKey()
+    public Long getPhoneNumberKey()
     {
         return phoneNumberKey;
     }
 
-    public void setPhoneNumberKey( long phoneNumberKey )
+    public void setPhoneNumberKey( Long phoneNumberKey )
     {
         this.phoneNumberKey = phoneNumberKey;
     }
 
-    public long getOrderAddressKey()
+    public Long getBillingAddressKey()
     {
-        return orderAddressKey;
+        return billingAddressKey;
     }
 
-    public void setOrderAddressKey( long orderAddressKey )
+    public void setBillingAddressKey( Long billingAddressKey )
     {
-        this.orderAddressKey = orderAddressKey;
+        this.billingAddressKey = billingAddressKey;
     }
 
-    public long getDeliveryAddressKey()
+    public Long getDeliveryAddressKey()
     {
         return deliveryAddressKey;
     }
 
-    public void setDeliveryAddressKey( long deliveryAddressKey )
+    public void setDeliveryAddressKey( Long deliveryAddressKey )
     {
         this.deliveryAddressKey = deliveryAddressKey;
     }
 
-    public DateTime getDeliveryDate()
+    public DateTime getOrderDate()
     {
-        return deliveryDate;
+        return orderDate;
     }
 
-    public void setDeliveryDate( DateTime deliveryDate )
+    public void setOrderDate( DateTime orderDate )
     {
-        this.deliveryDate = deliveryDate;
+        this.orderDate = orderDate;
     }
 
+    public Boolean isAsapOrder()
+    {
+        return isAsapOrder;
+    }
+
+    public void setIsAsapOrder( Boolean isAsapOrder )
+    {
+        this.isAsapOrder = isAsapOrder;
+    }
 }

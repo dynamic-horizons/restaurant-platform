@@ -26,7 +26,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @MappedSuperclass
 @EntityListeners( value = { AuditingEntityListener.class } )
 public class AbstractEntity<PK extends Serializable>
-    implements Auditable<User, PK>
+    implements Auditable<User, PK>, Cloneable
 {
     private static final long serialVersionUID = 1743597881995402609L;
 
@@ -39,7 +39,6 @@ public class AbstractEntity<PK extends Serializable>
     @JsonIgnore
     private User createdBy;
 
-    @Temporal( TemporalType.TIMESTAMP )
     @Column( name = "CREATE_DATE" )
     @JsonIgnore
     private Date createdDate;
@@ -59,6 +58,7 @@ public class AbstractEntity<PK extends Serializable>
     @JsonIgnore
     protected Integer version;
 
+    @Override
     public PK getId()
     {
         return id;
@@ -69,45 +69,53 @@ public class AbstractEntity<PK extends Serializable>
         this.id = id;
     }
 
+    @Override
     @JsonIgnore
     public User getCreatedBy()
     {
         return createdBy;
     }
 
+    @Override
     public void setCreatedBy( User createdBy )
     {
         this.createdBy = createdBy;
     }
 
+    @Override
     @JsonIgnore
     public DateTime getCreatedDate()
     {
         return null == createdDate ? null : new DateTime( createdDate );
     }
 
+    @Override
     public void setCreatedDate( DateTime createdDate )
     {
         this.createdDate = null == createdDate ? null : createdDate.toDate();
     }
 
+    @Override
     @JsonIgnore
     public User getLastModifiedBy()
     {
         return lastModifiedBy;
     }
 
+    @Override
     public void setLastModifiedBy( User lastModifiedBy )
     {
         this.lastModifiedBy = lastModifiedBy;
     }
 
+    @Override
     @JsonIgnore
     public DateTime getLastModifiedDate()
     {
         return null == lastModifiedDate ? null : new DateTime( lastModifiedDate );
     }
 
+    @Override
     public void setLastModifiedDate( DateTime lastModifiedDate )
     {
         this.lastModifiedDate = null == lastModifiedDate ? null : lastModifiedDate.toDate();
@@ -124,6 +132,7 @@ public class AbstractEntity<PK extends Serializable>
         this.version = version;
     }
 
+    @Override
     @JsonIgnore
     public boolean isNew()
     {
@@ -167,6 +176,14 @@ public class AbstractEntity<PK extends Serializable>
         hashCode += null == getId() ? 0 : getId().hashCode() * 31;
 
         return hashCode;
+    }
+
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public AbstractEntity<PK> clone()
+        throws CloneNotSupportedException
+    {
+        return (AbstractEntity<PK>) super.clone();
     }
 
 }

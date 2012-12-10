@@ -2,5 +2,7 @@
 
 /.gradle
 /restaurant-platform-domain/bin
+/restaurant-platform-domain/build
 /restaurant-platform-order-printing/bin
+/restaurant-platform-order-printing/build
 /restaurant-platform-webapp/build

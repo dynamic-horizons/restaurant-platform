@@ -67,6 +67,7 @@ public class MenuServiceImpl
      */
     private Map<String, Menu> menuCache = null;
 
+    @Override
     public List<Menu> getAllMenus()
     {
         cacheMenus();
@@ -74,6 +75,7 @@ public class MenuServiceImpl
         return new ArrayList<Menu>( menuCache.values() );
     }
 
+    @Override
     public Map<String, String> getMenuKeyNameMap()
     {
         cacheMenus();
@@ -87,6 +89,7 @@ public class MenuServiceImpl
         return menuKeyNameMap;
     }
 
+    @Override
     public Map<String, Map<String, Long>> getMenuGroupMap()
     {
         cacheMenus();
@@ -106,6 +109,7 @@ public class MenuServiceImpl
         return menuGroupMap;
     }
 
+    @Override
     public Menu getMenuByMenuKey( String menuKey )
     {
         cacheMenus();

@@ -1,0 +1,6 @@
+bin/OrderPrintingService //IS//OrderPrintingService --DisplayName="Restaurant Platform Order Printing Service" ^
+		++JvmOptions libs/* --Startup auto ^
+        --Install=bin/OrderPrintingService.exe --Jvm=auto --StartMode=jvm --StopMode=jvm ^
+        --StartClass=net.dynamichorizons.rp.print.OrderPrinterDaemonEngine --StartMethod windowsService --StartParams start ^
+        --StopClass=net.dynamichorizons.rp.print.OrderPrinterDaemonEngine --StopMethod windowsService --StopParams  stop ^
+		--LogPath logs --LogPrefix rp-daemon

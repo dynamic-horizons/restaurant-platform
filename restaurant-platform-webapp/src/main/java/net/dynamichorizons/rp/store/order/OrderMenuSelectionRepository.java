@@ -7,5 +7,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface OrderMenuSelectionRepository
     extends PagingAndSortingRepository<OrderMenuSelection, Long>
 {
-
+    public OrderMenuSelection saveAndFlush( OrderMenuSelection orderMenuSelection );
 }

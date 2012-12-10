@@ -26,5 +26,9 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface MenuItemRepository
     extends PagingAndSortingRepository<MenuItem, Long>
 {
+
     public List<MenuItem> findByMenuGroupId( Long menuGroupId );
+
+    public MenuItem findByMenuGroupItemId( Long menuGroupItemId );
+
 }

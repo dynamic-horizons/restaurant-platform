@@ -15,25 +15,15 @@
     http://www.springframework.org/schema/aop 
     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
+	<context:component-scan base-package="net.dynamichorizons.rp.async.service" />
 	<context:component-scan base-package="net.dynamichorizons.rp.rest.service" />
 	<context:component-scan base-package="net.dynamichorizons.rp.service" />
 
 	<jpa:auditing auditor-aware-ref="userServiceImpl" />
 	<jpa:repositories base-package="net.dynamichorizons.rp.store" />
 
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-		<tx:attributes>
-			<tx:method name="get*" read-only="true" />
-			<tx:method name="find*" read-only="true" />
-			<tx:method name="*" />
-		</tx:attributes>
-	</tx:advice>
-
-	<aop:config>
-		<!-- <aop:pointcut id="fooServiceOperation" expression="execution(* x.y.service.FooService.*(..))" 
-			/> <aop:advisor advice-ref="txAdvice" pointcut-ref="fooServiceOperation" 
-			/> -->
-	</aop:config>
+	<tx:annotation-driven mode="aspectj"
+		transaction-manager="transactionManager" />
 
 	<jee:jndi-lookup id="targetDataSource" jndi-name="jdbc/RestaurantPlatformDB" />
 
@@ -53,6 +43,14 @@
 			<bean
 				class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
 		</property>
+		<property name="persistenceUnitPostProcessors">
+			<list>
+				<bean
+					class="org.springframework.data.jpa.support.ClasspathScanningPersistenceUnitPostProcessor">
+					<constructor-arg value="net.dynamichorizons.rp.domain" />
+				</bean>
+			</list>
+		</property>
 	</bean>
 
 	<bean id="validator"
@@ -61,7 +59,7 @@
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 	</bean>
-	
+
 	<bean id="rpRealm" class="net.dynamichorizons.rp.auth.RestaurantPlatformRealmImpl"
 		depends-on="userRepository" />
 

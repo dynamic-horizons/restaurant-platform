@@ -18,8 +18,10 @@ import net.dynamichorizons.rp.store.customer.PhoneNumberRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional( readOnly = true )
 public class CustomerServiceImpl
     implements CustomerService
 {
@@ -63,6 +65,7 @@ public class CustomerServiceImpl
     }
 
     @Override
+    @Transactional
     public Customer login( String username, String password, boolean rememberMe )
         throws LoginException
     {
@@ -77,6 +80,7 @@ public class CustomerServiceImpl
     }
 
     @Override
+    @Transactional
     public Customer createCustomer( Customer customer )
         throws UserExistsException, DatabaseException
     {
@@ -95,6 +99,7 @@ public class CustomerServiceImpl
     }
 
     @Override
+    @Transactional
     public Address addAddress( Address address )
     {
         Customer customer = getCustomer();
@@ -114,12 +119,22 @@ public class CustomerServiceImpl
     }
 
     @Override
+    @Transactional
     public Address modifyAddress( Address address )
     {
-        return addressRepository.save( address );
+        Address originalAddress = addressRepository.findOne( address.getId() );
+        originalAddress.setAddress1( address.getAddress1() );
+        originalAddress.setAddress2( address.getAddress2() );
+        originalAddress.setCity( address.getCity() );
+        originalAddress.setState( address.getState() );
+        originalAddress.setZipCode( address.getZipCode() );
+        originalAddress.setDefaultAddress( address.isDefaultAddress() );
+
+        return addressRepository.save( originalAddress );
     }
 
     @Override
+    @Transactional
     public void deleteAddress( Long addressId )
     {
         Customer customer = getCustomer();
@@ -147,6 +162,7 @@ public class CustomerServiceImpl
     }
 
     @Override
+    @Transactional
     public PhoneNumber addPhoneNumber( PhoneNumber phoneNumber )
     {
         Customer customer = getCustomer();
@@ -166,12 +182,20 @@ public class CustomerServiceImpl
     }
 
     @Override
+    @Transactional
     public PhoneNumber modifyPhoneNumber( PhoneNumber phoneNumber )
     {
+        PhoneNumber originalPhoneNumber = phoneNumberRepository.findOne( phoneNumber.getId() );
+        originalPhoneNumber.setPhoneNumber( phoneNumber.getPhoneNumber() );
+        originalPhoneNumber.setPhoneExt( phoneNumber.getPhoneExt() );
+        originalPhoneNumber.setPhoneDescription( phoneNumber.getPhoneDescription() );
+        originalPhoneNumber.setDefaultPhoneNumber( phoneNumber.isDefaultPhoneNumber() );
+
         return phoneNumberRepository.save( phoneNumber );
     }
 
     @Override
+    @Transactional
     public void deletePhoneNumber( Long phoneNumberId )
     {
         Customer customer = getCustomer();
@@ -200,7 +224,7 @@ public class CustomerServiceImpl
 
     private void injectCustomerInformation( Customer customer )
     {
-        customer.setAddresses( addressRepository.findByCustomerId( customer.getId() ) );
-        customer.setPhoneNumbers( phoneNumberRepository.findByCustomerId( customer.getId() ) );
+        customer.setAddresses( addressRepository.findByCustomerIdAndActive( customer.getId(), true ) );
+        customer.setPhoneNumbers( phoneNumberRepository.findByCustomerIdAndActive( customer.getId(), true ) );
     }
 }

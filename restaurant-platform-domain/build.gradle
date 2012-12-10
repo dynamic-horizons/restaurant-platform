@@ -1,18 +1,19 @@
 dependencies {
-	compile (
-		"com.sun.jersey:jersey-core:$versionJersey",
-		"commons-lang:commons-lang:2.6",
-		"javax.validation:validation-api:1.0.0.GA",
-		"javax.xml.bind:jaxb-api:2.2.7",
-		"joda-time:joda-time:2.1",
-		"org.codehaus.jackson:jackson-core-asl:1.9.9",
-		"org.hibernate:hibernate-core:$versionHibernate",
-		"org.hibernate:hibernate-entitymanager:$versionHibernate",
-		"org.hibernate:hibernate-validator:4.3.0.Final",
-		"org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final",
-		"org.slf4j:slf4j-api:$versionSlf4j",
-	    "org.springframework:spring-core:$versionSpring",
-	    "org.springframework:spring-orm:$versionSpring",
-	    "org.springframework.data:spring-data-jpa:1.1.1.RELEASE",
-    )
+    compile (
+             "com.sun.jersey:jersey-core:$versionJersey",
+             "commons-lang:commons-lang:2.6",
+             "javax.validation:validation-api:1.0.0.GA",
+             "javax.xml.bind:jaxb-api:2.2.7",
+             "joda-time:joda-time:2.1",
+             "org.codehaus.jackson:jackson-core-asl:1.9.9",
+             "org.hibernate:hibernate-core:$versionHibernate",
+             "org.hibernate:hibernate-entitymanager:$versionHibernate",
+             "org.hibernate:hibernate-validator:4.3.0.Final",
+             "org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final",
+             "org.jadira.usertype:usertype.core:3.0.0.CR3",
+             "org.slf4j:slf4j-api:$versionSlf4j",
+             "org.springframework:spring-core:$versionSpring",
+             "org.springframework:spring-orm:$versionSpring",
+             "org.springframework.data:spring-data-jpa:1.1.1.RELEASE",
+         )
 }

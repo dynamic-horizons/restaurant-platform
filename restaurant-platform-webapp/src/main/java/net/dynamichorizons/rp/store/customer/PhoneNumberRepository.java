@@ -9,5 +9,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface PhoneNumberRepository
     extends PagingAndSortingRepository<PhoneNumber, Long>
 {
-    public List<PhoneNumber> findByCustomerId(Long customerId);
+    public List<PhoneNumber> findByCustomerIdAndActive( Long customerId, Boolean active );
 }

@@ -41,7 +41,7 @@
 							<fo:table-row>
 								<fo:table-cell>
 									<fo:block>
-										<fo:external-graphic src="http://bdeli.dynamichorizons.net/assets/images/brothers-logo-white@2.png" 
+										<fo:external-graphic src="http://www.thebrothersdeli.com/assets/images/brothers-logo-white@2.png" 
 											width="190px" height="80px" content-width="109px" content-height="80px" />
 									</fo:block>
 								</fo:table-cell>

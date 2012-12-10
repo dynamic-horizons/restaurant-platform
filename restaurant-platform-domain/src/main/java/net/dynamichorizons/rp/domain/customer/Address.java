@@ -11,10 +11,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-
 import net.dynamichorizons.rp.domain.State;
 import net.dynamichorizons.rp.domain.base.AbstractEntity;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Entity
 @Table( name = "TBL_ADDRESS" )
@@ -25,10 +25,10 @@ public class Address
 {
 
     private static final long serialVersionUID = -7047593003649701467L;
-    
+
     @Column( name = "CUSTOMER_ID", nullable = false, table = "TBL_CUSTOMER_ADDRESS" )
     private Long customerId;
-    
+
     @Column( name = "CUSTOMER_ADDRESS_ID", nullable = false, table = "TBL_CUSTOMER_ADDRESS" )
     private Long customerAddressId;
 
@@ -55,9 +55,12 @@ public class Address
     @NotNull( message = "Zip code must not be empty" )
     @Size( min = 5, max = 10, message = "Zip code must be 5 or 10 digits long" )
     private String zipCode;
-    
+
     @Column( name = "DEFAULT_ADDRESS", nullable = false, table = "TBL_CUSTOMER_ADDRESS" )
     private Boolean defaultAddress;
+
+    @Column( name = "ACTIVE", nullable = false, table = "TBL_CUSTOMER_ADDRESS" )
+    private Boolean active;
 
     public Address()
     {
@@ -70,7 +73,7 @@ public class Address
         this.state = state;
         this.zipCode = zipCode;
     }
-    
+
     @JsonIgnore
     public Long getCustomerId()
     {
@@ -152,5 +155,14 @@ public class Address
     {
         this.defaultAddress = defaultAddress;
     }
-    
+
+    public Boolean isActive()
+    {
+        return active;
+    }
+
+    public void setActive( Boolean active )
+    {
+        this.active = active;
+    }
 }

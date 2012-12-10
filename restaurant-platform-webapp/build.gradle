@@ -35,10 +35,10 @@ dependencies {
 	    'mysql:mysql-connector-java:5.1.21',
 	    'org.springframework.data:spring-data-jpa:1.1.1.RELEASE',
 	    'commons-dbcp:commons-dbcp:1.4',
-	    'com.fasterxml.jackson.datatype:jackson-datatype-hibernate4:2.0.5',
 	    'org.apache.shiro:shiro-core:1.2.1',
 	    'org.apache.shiro:shiro-spring:1.2.1',
 	    'javax.validation:validation-api:1.0.0.GA',
+        'org.aspectj:aspectjweaver:1.7.0',
     )
     
     testCompile (

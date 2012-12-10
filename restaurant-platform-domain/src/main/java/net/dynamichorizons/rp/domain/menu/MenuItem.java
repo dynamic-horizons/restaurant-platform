@@ -49,10 +49,10 @@ public class MenuItem
 
     private static final long serialVersionUID = 3133311116453300308L;
 
-    @Column( name = "MENU_GROUP_ITEM_ID", table = "TBL_MENU_GROUP_ITEM" )
+    @Column( name = "MENU_GROUP_ITEM_ID", table = "TBL_MENU_GROUP_ITEM", nullable = false )
     protected Long menuGroupItemId;
 
-    @Column( name = "MENU_GROUP_ID", table = "TBL_MENU_GROUP_ITEM" )
+    @Column( name = "MENU_GROUP_ID", table = "TBL_MENU_GROUP_ITEM", nullable = false )
     protected Long menuGroupId;
 
     @Column( name = "MENU_ITEM_NAME", nullable = true, length = 75 )
@@ -61,7 +61,7 @@ public class MenuItem
     @Column( name = "MENU_ITEM_DESC", nullable = true, length = 450 )
     protected String menuItemDescription;
 
-    @Column( name = "MENU_GROUP_ITEM_PRICE", nullable = true, table = "TBL_MENU_GROUP_ITEM" )
+    @Column( name = "MENU_GROUP_ITEM_PRICE", table = "TBL_MENU_GROUP_ITEM", nullable = true )
     protected Double menuItemPrice;
 
     @Embedded
@@ -319,6 +319,7 @@ public class MenuItem
         this.menuItemTags = menuItemTags;
     }
 
+    @Override
     public String toString()
     {
         return new ToStringBuilder( this ).append( "uid", getId() ).append( "name", menuItemName ).append( "menuItemSizes",

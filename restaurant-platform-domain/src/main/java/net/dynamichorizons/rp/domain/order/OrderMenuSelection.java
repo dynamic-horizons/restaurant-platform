@@ -6,10 +6,13 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import net.dynamichorizons.rp.domain.base.AbstractEntity;
 import net.dynamichorizons.rp.domain.menu.MenuItem;
 import net.dynamichorizons.rp.domain.menu.MenuItemSize;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Entity
 @Table( name = "TBL_ORDER_MENU_SELECTION" )
@@ -24,21 +27,35 @@ public class OrderMenuSelection
     @JoinColumn( name = "ORDER_ID" )
     protected Order order;
 
-    @ManyToOne
-    @JoinColumn( name = "MENU_ITEM_ID" )
+    @Transient
     protected MenuItem selectedMenuItem;
 
-    @ManyToOne
-    @JoinColumn( name = "MENU_ITEM_SIZE_ID" )
+    @Column( name = "MENU_GROUP_ITEM_ID", nullable = true )
+    protected Long menuGroupItemId;
+
+    @Transient
     private MenuItemSize selectedMenuItemSize;
 
+    @Column( name = "MENU_ITEM_SIZE_ID", nullable = true )
+    protected Long menuItemSizeId;
+
+    @Column( name = "ORDER_MENU_SELECTION_QUANTITY", nullable = false )
+    private Integer quantity;
+
     @Column( name = "ORDER_MENU_SELECTION_COMMENTS", nullable = true, length = 500 )
-    private String orderMenuSelectionComments;
+    private String comments;
+
+    @Column( name = "ORDER_MENU_SELECTION_PRICE", nullable = false )
+    private Double price;
+
+    @Column( name = "ORDER_MENU_SELECTION_TOTAL", nullable = false )
+    private Double total;
 
     public OrderMenuSelection()
     {
     }
 
+    @JsonIgnore
     public Order getOrder()
     {
         return order;
@@ -59,6 +76,17 @@ public class OrderMenuSelection
         this.selectedMenuItem = selectedMenuItem;
     }
 
+    @JsonIgnore
+    public Long getMenuGroupItemId()
+    {
+        return menuGroupItemId;
+    }
+
+    public void setMenuGroupItemId( Long menuGroupItemId )
+    {
+        this.menuGroupItemId = menuGroupItemId;
+    }
+
     public MenuItemSize getSelectedMenuItemSize()
     {
         return selectedMenuItemSize;
@@ -69,14 +97,55 @@ public class OrderMenuSelection
         this.selectedMenuItemSize = selectedMenuItemSize;
     }
 
-    public String getOrderMenuSelectionComments()
+    @JsonIgnore
+    public Long getMenuItemSizeId()
     {
-        return orderMenuSelectionComments;
+        return menuItemSizeId;
     }
 
-    public void setOrderMenuSelectionComments( String orderMenuSelectionComments )
+    public void setMenuItemSizeId( Long menuItemSizeId )
     {
-        this.orderMenuSelectionComments = orderMenuSelectionComments;
+        this.menuItemSizeId = menuItemSizeId;
+    }
+
+    public Integer getQuantity()
+    {
+        return quantity;
+    }
+
+    public void setQuantity( Integer quantity )
+    {
+        this.quantity = quantity;
+    }
+
+    public String getComments()
+    {
+        return comments;
+    }
+
+    public void setComments( String comments )
+    {
+        this.comments = comments;
+    }
+
+    public Double getPrice()
+    {
+        return price;
+    }
+
+    public void setPrice( Double price )
+    {
+        this.price = price;
+    }
+
+    public Double getTotal()
+    {
+        return total;
+    }
+
+    public void setTotal( Double total )
+    {
+        this.total = total;
     }
 
 }

@@ -45,6 +45,9 @@ public class PhoneNumber
     @Column( name = "DEFAULT_PHONE", nullable = false, table = "TBL_CUSTOMER_PHONE" )
     private Boolean defaultPhoneNumber;
 
+    @Column( name = "ACTIVE", nullable = false, table = "TBL_CUSTOMER_PHONE" )
+    private Boolean active;
+
     public PhoneNumber()
     {
     }
@@ -114,5 +117,15 @@ public class PhoneNumber
     public void setDefaultPhoneNumber( Boolean defaultPhoneNumber )
     {
         this.defaultPhoneNumber = defaultPhoneNumber;
+    }
+
+    public Boolean isActive()
+    {
+        return active;
+    }
+
+    public void setActive( Boolean active )
+    {
+        this.active = active;
     }
 }
